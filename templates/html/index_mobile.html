@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!-- saved from url=(0034)http://vvpinche.com/wei/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快点餐</title>
+    <meta content="让点餐更方便" name="description">
+    <link href="/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+  	<!--第一屏开始-->
+    <div class="pageWrap page1">
+    	<img src="/img/01.png">
+        <a id="downloadBtn" href="#downloadWrap" style="visibility:display" class="downloadBtn">点击下载</a>
+    </div>
+    <!--第一屏结束-->
+    <!--第二屏开始-->
+    <div class="pageWrap page2">
+    	<img src="/img/02.png">
+    </div>
+    <!--第二屏结束-->
+
+    <!--第六屏开始-->
+    <div class="pageWrap page7" id="downloadWrap">
+    	<!--
+    	<img src="img/08.png"/>
+       --> 
+        <p class="textWrap">
+        根据你的手机<br>选择下载
+        </p>
+        
+        <a  class="downLink1 iOSLeftLink" href="https://itunes.apple.com/cn/app/kuai-dian-can/id1035391139?mt=8">
+        	<span>iOS用户端
+            </span>
+        </a>
+        
+        <a  class="downLink2 iOSRightLink"
+            href="https://itunes.apple.com/cn/app/kuai-dian-can-shang-jia/id1035361914?mt=8">
+        	<span>iOS商家端
+            </span>
+        </a>
+        <a  class="downLink3 androidLink">
+        	<span>Android敬请期待
+            </span>
+        </a>
+    </div>
+    <!--第六屏结束-->
+
+</body></html>
+<script type="text/javascript">
+    window.onload = function(){
+    if(isWeiXin() == true){
+        var img = document.getElementsByTagName('img');
+        img[0].src = "/img/wx_mask.png";
+        var a = document.getElementsByTagName('a');
+        a[0].parentNode.removeChild(a[0]);
+    }
+}
+function isWeiXin(){
+    var ua = window.navigator.userAgent.toLowerCase();
+    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+        return true;
+    }else{
+        return false;
+    }
+}
+</script>

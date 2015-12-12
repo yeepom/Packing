@@ -1,0 +1,27 @@
+body{padding:0px; margin:0px;}
+.pageWrap{ position:relative;}
+.downloadBtn{border:1px solid #dc462e; border-radius: 20px; width: 150px; line-height: 35px; height:35px;
+display:block; position:absolute; margin-left:-75px; left:50%; bottom: 16%; color: #dc462e; text-align: center; text-decoration: none;  font-size:16px;}
+.downloadBtn:visited{ color:#dc462e;}
+.pageWrap img{max-width:100%; display:block;padding:0px; vertical-align:bottom;margin:0px auto;}
+.page1{background-color:#ffffff;}
+.page2{background-color:#ffffff;}
+.page3{background-color:#ffffff;}
+.page4{background-color:#ffffff;}
+.page5{background-color:#FFFFFF;}
+.page6{background-color:#ffffff;}
+.page7{background-color:#fff; height: 570px; text-align:center;}
+.page7 .textWrap{ line-height: 30px; display: block; position:absolute; top:50px; text-align:center; width: 100%;left:0px; font-size: 25px;}
+.page7 .downLink1{ position:absolute; width: 130px; height: 130px; top: 150px; background-color: #A2A9AE; left:25%; margin-left: -65px; text-decoration: none;}
+.page7 .downLink2{ position:absolute; width: 130px; height: 130px; top: 0px; background-color: #A2A9AE; right:25%; margin-right: -65px; text-decoration: none;}
+.page7 .downLink1 span{ position:absolute; width: 100%; display:block; bottom: 20px; font-size: 14px; text-align:center; color: #fff;}
+.page7 .downLink2 span{ position:absolute; width: 100%; display:block; bottom: 20px; font-size: 14px; text-align:center; color: #fff;}
+.page7 .iOSLeftLink{ background:url(../img/apple.gif) no-repeat scroll center 30px; background-size: 35%;
+background-color: #A2A9AE;}
+.page7 .iOSRightLink{ background:url(../img/apple.gif) no-repeat scroll center 30px; background-size: 35%;
+background-color:#A2A9AE; top: 150px;}
+
+.page7 .downLink3{ position:absolute; width: 130px; height: 130px; top: 150px; background-color: #A2C21D; left:50%; margin-left: -75px; text-decoration: none;}
+.page7 .downLink3 span{ position:absolute; width: 100%; display:block; bottom: 20px; font-size: 14px; text-align:center; color: #fff;}
+.page7 .androidLink{ background:url(../img/android.gif) no-repeat scroll center 30px; background-size: 35%;background-color:
+#A2C21D; top: 320px;}
