@@ -76,7 +76,7 @@ def sendVerifyCode(request):
         verify_code = random.randrange(1000,9999,4)
     if _method =='0':
         base64_password = base64.encodestring('123456')
-        content_msg = u'【快点餐】登陆验证码：'+str(verify_code)+u'，请您妥善保管。'
+        content_msg = u'【后厨帮】登陆验证码：'+str(verify_code)+u'，请您妥善保管。'
         params = urllib.urlencode({'action':'send','userid':'695','account':u'快点餐'.encode('utf-8'),'password':'123456',
         'mobile':_telephone,'content':content_msg})
         url_req = "http://115.28.50.135:8888/sms.aspx"

@@ -16,7 +16,7 @@ sys.setdefaultencoding('utf8')
 def cookGetCurrentOrderSkuBackupList(request):
     logger = logging.getLogger('Pack.app')
     response = {}
-    response['data'] = {}
+    response['data'] = []
     response['errorMsg'] = ""
     _cookId = request.session.get('cookId')
     if not _cookId:
@@ -103,12 +103,13 @@ def cookGetCurrentOrderSkuBackupList(request):
             response['code'] = 0
             response['data'] = orderSkuBackupList
             return HttpResponse(json.dumps(response),content_type="application/json")
+
         orderSkuBackupId = []
         for orderSkuBackup in orderSkuBackupDispatchingQuery:
             orderSkuBackupId.append(int(orderSkuBackup.id))
 
         rst = OrderSkuBackup.objects.filter(pk__in = orderSkuBackupId).update(status='2',cookId=str(cook.id),cookName = str(cook.name))
-        if rst == 1:
+        if rst >= 1:
             orderSkuBackupDispatchedNewQuery = OrderSkuBackup.objects.filter(pk__in = orderSkuBackupId)
             orderSkuBackupAllQuery = orderSkuBackupDispatchedQuery | orderSkuBackupDispatchedNewQuery
             orderSkuBackupList = []
@@ -125,6 +126,7 @@ def cookGetCurrentOrderSkuBackupList(request):
             orderSkuListDispatching = []
             for orderSkuBackupDispatching in orderSkuBackupDispatchingQuery:
                 orderSkuListDispatching.append(int(orderSkuBackupDispatching.orderSkuId))
+            logger.info(orderSkuListDispatching)
             cookSyncOrderSku.delay(str(cook.id),str(cook.name),'2',orderSkuListDispatching)
             response['code'] = 0
             response['data'] = orderSkuBackupList

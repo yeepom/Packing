@@ -117,7 +117,7 @@ urlpatterns = patterns('',
     url(r'^serveGetCurrentOrderSkuBackupList$','pack.serve_order.serveGetCurrentOrderSkuBackupList'),
     url(r'^serveFinishOrderSkuBackupList$','pack.serve_order.serveFinishOrderSkuBackupList'),
 
-    url(r'^index$','pack.webViews.index'),
+    url(r'^','pack.webViews.index'),
     url(r'^shopProtocol$','pack.webViews.shopProtocol'),
     url(r'^userProtocol$','pack.webViews.userProtocol'),
     ( r'^js/(?P<path>.*)$', 'django.views.static.serve',

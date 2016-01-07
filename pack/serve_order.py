@@ -120,7 +120,7 @@ def serveGetCurrentOrderSkuBackupList(request):
             orderSkuBackupId.append(int(orderSkuBackup.id))
 
         rst = OrderSkuBackup.objects.filter(pk__in = orderSkuBackupId).update(status='5',serveId=str(serve.id),serveName = str(serve.name))
-        if rst == 1:
+        if rst >= 1:
             orderSkuBackupDispatchedNewQuery = OrderSkuBackup.objects.filter(pk__in = orderSkuBackupId)
             orderSkuBackupAllQuery = orderSkuBackupDispatchedQuery | orderSkuBackupDispatchedNewQuery
             orderSkuBackupList = []

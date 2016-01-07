@@ -8,7 +8,7 @@ sys.setdefaultencoding('gbk')
 def notify(telephone, method):
     if method == '1':
         print '1'
-        content_msg = '【快客】您的订单已经准备好啦！'
+        content_msg = '【后厨帮】您的订单已经准备好啦！'
         params = urllib.urlencode({'method':'sendSMS','username':774660874,'password':base64.encodestring('774660874'),'smstype':'1','mobile':telephone,'isLongSms':'0','content':content_msg})
         url_req = "http://114.215.136.186:9008/servlet/UserServiceAPI"
         sms_req = urllib2.Request(url = url_req, data = params)
@@ -18,7 +18,7 @@ def notify(telephone, method):
 
     elif method == '2':
         print '2'
-        content_msg = '【快客】您有新订单，请打开快客商家版查看，或下载客户端查看。'
+        content_msg = '【后厨帮】您有新订单，请打开快客商家版查看，或下载客户端查看。'
         params = urllib.urlencode({'method':'sendSMS','username':774660874,'password':base64.encodestring('774660874'),'smstype':'1','mobile':telephone,'isLongSms':'0','content':content_msg})
         url_req = "http://114.215.136.186:9008/servlet/UserServiceAPI"
         sms_req = urllib2.Request(url = url_req, data = params)
@@ -27,7 +27,7 @@ def notify(telephone, method):
         return sms_response
     elif method == '3':
         print '3'
-        content_msg = '【快客】您有订单被取消了，请打开快客商家版查看，以免造成不必要的浪费。'
+        content_msg = '【后厨帮】您有订单被取消了，请打开快客商家版查看，以免造成不必要的浪费。'
         params = urllib.urlencode({'method':'sendSMS','username':774660874,'password':base64.encodestring('774660874'),'smstype':'1','mobile':telephone,'isLongSms':'0','content':content_msg})
         url_req = "http://114.215.136.186:9008/servlet/UserServiceAPI"
         sms_req = urllib2.Request(url = url_req, data = params)
