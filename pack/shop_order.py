@@ -188,3 +188,62 @@ def getShopOrderDetail(request):
         return HttpResponse(json.dumps(response),content_type="application/json")
 
 
+@csrf_exempt
+def getShopDoingOrderList(request):
+    logger = logging.getLogger('Pack.app')
+    logger.info('----------------------------')
+    response = {}
+    response['data'] = {}
+    response['errorMsg'] = ""
+    _shopId = request.session.get('shopId')
+    if not _shopId:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+    ##################JUDGE############
+    _lastLoginTime = request.session.get('lastLoginTime')
+    if not _lastLoginTime:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    try:
+        shop = Shop.objects.get(id = _shopId)
+    except ObjectDoesNotExist:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+    if _lastLoginTime != shop.lastLoginTime:
+        response['code'] = 1
+        response['errorMsg'] = '上次登录失效，请重新登录'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    ####################END#################
+
+    _orderId = request.REQUEST.get('orderId')
+    _limit = request.REQUEST.get('limit',20)
+    _limit = int(_limit)
+
+    if _orderId == None or _orderId == '':
+        response['code'] = -1
+        response['errorMsg'] = '获取orderId失败'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+
+    _orderId = str(_orderId)
+    if _orderId == '0':
+        orderQuery = Order.objects.filter(status = '0').order_by('id')
+    else:
+        orderQuery = Order.objects.filter(status = '0').filter(id__lt = _orderId).order_by('id')
+    orders = orderQuery.reverse()[0:0+_limit]
+    orderList = []
+    for order in orders:
+        _order = {}
+        _order['orderId'] = order.id
+        _order['tableNumber'] = order.tableNumber
+        _priceTotal = float(order.priceTotal)
+        _order['priceTotal'] = str(_priceTotal)
+        shanghai_tz = pytz.timezone('Asia/Shanghai')
+        _order['dateTime'] = order.date.astimezone(shanghai_tz).strftime('%Y/%m/%d %H:%M:%S')
+        _order['status'] = order.status
+        orderList.append(_order)
+    response['code'] = 0
+    response['data'] = orderList
+    return HttpResponse(json.dumps(response),content_type = "application/json")

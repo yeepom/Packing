@@ -3,6 +3,8 @@
 	display: inline-block;
 	height: 75px;
 	margin: 0;
+	margin-left: 20px;
+	margin-right: 20px;
     padding: 0 0 0 15px;
     background: #000;
     font-size: 22px;
@@ -32,7 +34,7 @@
 .button-1 .button-1-right {
 	float: left;
 	width: 160px;
-	margin: 7px 0 0 12px;
+	margin: 20px 0 0 12px;
 }
 
 .button-1 .button-1-right .button-1-right-top, 

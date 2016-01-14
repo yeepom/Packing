@@ -11679,3 +11679,596 @@ Traceback (most recent call last):
     return self.cursor.execute(sql, params)
 DataError: 错误:  对于可变字符类型来说，值太长了(1)
 
+2016-01-10 12:56:30,790 [Thread-1:1700] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 194, in inner
+    if request.path == reverse('admin:logout', current_app=self.name):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.serve_order.serveFinishOrderSkuBackupList. View does not exist in module pack.serve_order.
+2016-01-10 12:56:57,253 [Thread-1:1700] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 194, in inner
+    if request.path == reverse('admin:logout', current_app=self.name):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.cook_order.cookFinishOrderSkuList. View does not exist in module pack.cook_order.
+2016-01-10 12:59:35,362 [Thread-1:27932] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 194, in inner
+    if request.path == reverse('admin:logout', current_app=self.name):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.shop_table.alterTableNumber. View does not exist in module pack.shop_table.
+2016-01-10 13:00:16,549 [Thread-1:24792] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 194, in inner
+    if request.path == reverse('admin:logout', current_app=self.name):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.shop_member.alterServeDispatchUnit. View does not exist in module pack.shop_member.
+2016-01-10 13:00:34,234 [Thread-3:20000] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 194, in inner
+    if request.path == reverse('admin:logout', current_app=self.name):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.shop_member.alterServeDispatchUnit. View does not exist in module pack.shop_member.
+2016-01-10 13:00:36,368 [Thread-4:26796] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 194, in inner
+    if request.path == reverse('admin:logout', current_app=self.name):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.shop_member.alterServeDispatchUnit. View does not exist in module pack.shop_member.
+2016-01-10 13:00:42,796 [Thread-5:28168] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 194, in inner
+    if request.path == reverse('admin:logout', current_app=self.name):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.shop_member.alterServeDispatchUnit. View does not exist in module pack.shop_member.
+2016-01-10 13:00:43,844 [Thread-6:28548] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 194, in inner
+    if request.path == reverse('admin:logout', current_app=self.name):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.shop_member.alterServeDispatchUnit. View does not exist in module pack.shop_member.
+2016-01-10 13:02:55,503 [Thread-1:28168] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 194, in inner
+    if request.path == reverse('admin:logout', current_app=self.name):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.shop.shopUpdateClientID. View does not exist in module pack.shop.
+2016-01-10 13:07:18,538 [Thread-1:27832] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 194, in inner
+    if request.path == reverse('admin:logout', current_app=self.name):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.user.updateClientID. View does not exist in module pack.user.
+2016-01-10 13:42:48,411 [Thread-1:29160] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 204, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 387, in index
+    model_dict['admin_url'] = reverse('admin:%s_%s_changelist' % info, current_app=self.name)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.shop_sku_order_separate.removeOrderSeparatesInCategory. View does not exist in module pack.shop_sku_order_separate.
+2016-01-10 13:43:19,334 [Thread-1:25192] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 204, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 387, in index
+    model_dict['admin_url'] = reverse('admin:%s_%s_changelist' % info, current_app=self.name)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.shop_sku_order_separate.getFreeOrderSeparatesList. View does not exist in module pack.shop_sku_order_separate.
+2016-01-10 13:43:29,832 [Thread-3:28752] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 204, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 387, in index
+    model_dict['admin_url'] = reverse('admin:%s_%s_changelist' % info, current_app=self.name)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.shop_sku_order_separate.getFreeOrderSeparatesList. View does not exist in module pack.shop_sku_order_separate.
+2016-01-10 13:43:46,756 [Thread-4:26488] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 204, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 387, in index
+    model_dict['admin_url'] = reverse('admin:%s_%s_changelist' % info, current_app=self.name)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.shop_sku_order_separate.getFreeOrderSeparatesList. View does not exist in module pack.shop_sku_order_separate.
+2016-01-10 15:51:45,983 [Thread-52:7712] [django.request:231] [ERROR]- Internal Server Error: /beforeCookFeedback
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\beforeCook.py", line 370, in beforeCookFeedback
+    beforeCookFeedback = CookFeedBack(beforeCook = beforeCook, msg = _msg, date =datetime.datetime.now())
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\base.py", line 454, in __init__
+    raise TypeError("'%s' is an invalid keyword argument for this function" % list(kwargs)[0])
+TypeError: 'beforeCook' is an invalid keyword argument for this function
+2016-01-10 17:18:43,589 [Thread-4:5096] [django.request:231] [ERROR]- Internal Server Error: /removeAfterCookInCategory
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\shop_sku_afterCook.py", line 141, in removeAfterCookInCategory
+    afterCookCount = category.afterCook_set.count()
+AttributeError: 'Category' object has no attribute 'afterCook_set'
+2016-01-10 17:22:20,375 [Thread-12:9752] [django.request:231] [ERROR]- Internal Server Error: /verifyAfterCook
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\shop_member.py", line 927, in verifyAfterCook
+    afterCook = AfterCook(telephone = _telephone, name = _name, headImage = _headImage,shop = shop)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\base.py", line 454, in __init__
+    raise TypeError("'%s' is an invalid keyword argument for this function" % list(kwargs)[0])
+TypeError: 'shop' is an invalid keyword argument for this function
+2016-01-10 17:32:34,743 [Thread-11:27580] [django.request:231] [ERROR]- Internal Server Error: /verifyBeforeCook
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\shop_member.py", line 783, in verifyBeforeCook
+    elif beforeCook.shop == shop:
+AttributeError: 'BeforeCook' object has no attribute 'shop'
+2016-01-10 17:40:04,588 [Thread-14:17812] [django.request:231] [ERROR]- Internal Server Error: /removeOrderSeparate
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\shop_member.py", line 662, in removeOrderSeparate
+    orderSeparate = OrderSeparate.objects.get(id = _orderSeparateId)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\manager.py", line 92, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\query.py", line 345, in get
+    clone = self.filter(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\query.py", line 691, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\query.py", line 709, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\sql\query.py", line 1287, in add_q
+    clause, require_inner = self._add_q(where_part, self.used_aliases)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\sql\query.py", line 1314, in _add_q
+    current_negated=current_negated, connector=connector)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\sql\query.py", line 1186, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\sql\query.py", line 1094, in build_lookup
+    return final_lookup(lhs, rhs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\lookups.py", line 82, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\lookups.py", line 85, in get_prep_lookup
+    return self.lhs.output_field.get_prep_lookup(self.lookup_name, self.rhs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\fields\__init__.py", line 646, in get_prep_lookup
+    return self.get_prep_value(value)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\fields\__init__.py", line 915, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: '2\\'
+2016-01-10 19:04:09,752 [Thread-222:10284] [django.request:231] [ERROR]- Internal Server Error: /waiterGetTableList
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\waiter_table.py", line 46, in waiterGetTableList
+    tableQuery = Table.objects.filter(shop = waiter.shop).filter(isValid = True)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\query.py", line 691, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\query.py", line 709, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\sql\query.py", line 1287, in add_q
+    clause, require_inner = self._add_q(where_part, self.used_aliases)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\sql\query.py", line 1314, in _add_q
+    current_negated=current_negated, connector=connector)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\sql\query.py", line 1138, in build_filter
+    lookups, parts, reffed_aggregate = self.solve_lookup_type(arg)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\sql\query.py", line 1076, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\sql\query.py", line 1383, in names_to_path
+    self.raise_field_error(opts, name)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\sql\query.py", line 1389, in raise_field_error
+    "Choices are: %s" % (name, ", ".join(available)))
+FieldError: Cannot resolve keyword 'isValid' into field. Choices are: id, lockDateTime, number, peopleNumber, shop, shop_id, status, userId, waiterId
+2016-01-10 19:14:27,875 [Thread-14:22180] [django.request:231] [ERROR]- Internal Server Error: /admin/pack/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 204, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 446, in app_index
+    model_dict['admin_url'] = reverse('admin:%s_%s_changelist' % info, current_app=self.name)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.shop_table.alterTableNumber. View does not exist in module pack.shop_table.
+2016-01-10 19:42:56,608 [Thread-1:29984] [django.request:231] [ERROR]- Internal Server Error: /beforeCookDispatchSingleOrderSku
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\beforeCook_order.py", line 172, in beforeCookDispatchSingleOrderSku
+    beforeCookPushMessage(_orderSkuId)
+  File "C:\Python27\lib\site-packages\celery\local.py", line 167, in <lambda>
+    __call__ = lambda x, *a, **kw: x._get_current_object()(*a, **kw)
+  File "C:\Python27\lib\site-packages\celery\app\task.py", line 420, in __call__
+    return self.run(*args, **kwargs)
+  File "D:\data\packing\pack\tasks.py", line 141, in beforeCookPushMessage
+    afterCookCount = category.aftercook_count.count()
+AttributeError: 'Category' object has no attribute 'aftercook_count'
+2016-01-10 20:40:46,536 [Thread-1:25112] [django.request:231] [ERROR]- Internal Server Error: /serveFinishOrderSkuList
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\serve_order.py", line 130, in serveFinishOrderSkuList
+    orderSkuListDispatching.append(int(orderSku.orderSkuId))
+AttributeError: 'OrderSku' object has no attribute 'orderSkuId'
+2016-01-10 21:55:06,940 [Thread-409:16920] [django.request:231] [ERROR]- Internal Server Error: /serveFinishOrderSkuList
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\serve_order.py", line 116, in serveFinishOrderSkuList
+    orderSku = OrderSku.objects.get(id = _orderSkuId)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\manager.py", line 92, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\query.py", line 345, in get
+    clone = self.filter(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\query.py", line 691, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\query.py", line 709, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\sql\query.py", line 1287, in add_q
+    clause, require_inner = self._add_q(where_part, self.used_aliases)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\sql\query.py", line 1314, in _add_q
+    current_negated=current_negated, connector=connector)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\sql\query.py", line 1186, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\sql\query.py", line 1094, in build_lookup
+    return final_lookup(lhs, rhs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\lookups.py", line 82, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\lookups.py", line 85, in get_prep_lookup
+    return self.lhs.output_field.get_prep_lookup(self.lookup_name, self.rhs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\fields\__init__.py", line 646, in get_prep_lookup
+    return self.get_prep_value(value)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\db\models\fields\__init__.py", line 915, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: '122\\'
+2016-01-13 21:25:48,882 [Thread-1:27056] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-13 22:00:22,980 [Thread-6:11076] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-13 22:02:48,684 [Thread-7:28400] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-13 22:07:05,609 [Thread-8:16880] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-13 22:32:33,887 [Thread-1:10160] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-13 22:34:09,331 [Thread-4:12564] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-13 22:35:06,456 [Thread-5:2984] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-13 22:36:10,101 [Thread-6:14996] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-13 22:36:37,036 [Thread-7:800] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.

@@ -59,7 +59,7 @@ def waiterAddInfo(request):
     waiter.headImage = _headImage
     waiter.everSetInfo = True
     waiter.save()
-    response['data'] = {'type':'0','waiterId':str(waiter.id)}
+    response['data'] = {'type':'1','waiterId':str(waiter.id)}
     response['code'] = 0
     return HttpResponse(json.dumps(response),content_type="application/json")
 
@@ -172,11 +172,6 @@ def waiterAlterInfo(request):
     response_data['waiterTelephone'] = waiter.telephone
     response_data['waiterHeadImage'] = waiter.headImage
     if waiter.shop == None:
-        # response_shopInfo = {}
-        # response_shopInfo['shopId'] = ''
-        # response_shopInfo['shopName'] = ''
-        # response_shopInfo['shoptelephone'] = ''
-        # response_data['shopInfo'] = response_shopInfo
         response['data'] = response_data
         return HttpResponse(json.dumps(response),content_type="application/json")
 

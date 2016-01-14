@@ -1,7 +1,8 @@
 from django.contrib import admin
-from pack.models import User,ShopWallet,Shop,Category,Waiter,Cook,Serve
-from pack.models import Sku,Table,Order,OrderSku,OrderSkuBackup,OrderRecord,ShopEvaluate
+from pack.models import User,ShopWallet,Shop,Category,Waiter,Cook,Serve,BeforeCook,AfterCook,OrderSeparate
+from pack.models import Sku,Table,Order,OrderSku,OrderRecord,ShopEvaluate
 from pack.models import TransferMoney,ShopFeedBack,WaiterFeedBack,CookFeedBack,ServeFeedBack,UserFeedBack
+from pack.models import OrderSeparateFeedBack,BeforeCookFeedBack,AfterCookFeedBack
 # Register your models here.
 
 
@@ -14,7 +15,7 @@ class ShopWalletAdmin(admin.ModelAdmin):
 admin.site.register(ShopWallet,ShopWalletAdmin)
 
 class ShopAdmin(admin.ModelAdmin):
-    list_display = ('id','setInfoStatus','shopwallet','telephone','serveDispatchUnit','name','headImage',
+    list_display = ('id','everSetInfo','shopwallet','telephone','name','headImage',
                    'shopType','desc','isServiceOn','startTimeStamp','endTimeStamp','star',
                    'location','province','city','district','addressDetail','lastLoginTime','clientID',
                     'deviceToken','deviceInfo')
@@ -25,6 +26,22 @@ class WaiterAdmin(admin.ModelAdmin):
     list_display = ('id','everSetInfo','shop','telephone','name','headImage','clientID','lastLoginTime','clientID',
                     'deviceToken','deviceInfo')
 admin.site.register(Waiter,WaiterAdmin)
+
+
+class BeforeCookAdmin(admin.ModelAdmin):
+    list_display = ('id','everSetInfo','shopId','category','telephone','name','headImage','clientID','lastLoginTime','clientID',
+                    'deviceToken','deviceInfo')
+admin.site.register(BeforeCook,BeforeCookAdmin)
+
+class AfterCookAdmin(admin.ModelAdmin):
+    list_display = ('id','everSetInfo','shopId','category','telephone','name','headImage','clientID','lastLoginTime','clientID',
+                    'deviceToken','deviceInfo')
+admin.site.register(AfterCook,AfterCookAdmin)
+
+class OrderSeparateAdmin(admin.ModelAdmin):
+    list_display = ('id','everSetInfo','shopId','category','telephone','name','headImage','clientID','lastLoginTime','clientID',
+                    'deviceToken','deviceInfo')
+admin.site.register(OrderSeparate,OrderSeparateAdmin)
 
 class CookAdmin(admin.ModelAdmin):
     list_display = ('id','everSetInfo','shopId','category','telephone','name','headImage','clientID','lastLoginTime','clientID',
@@ -38,7 +55,7 @@ admin.site.register(Serve,ServeAdmin)
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id','categoryName','shop','dispatchUnit')
+    list_display = ('id','categoryName','shop')
 
 admin.site.register(Category,CategoryAdmin)
 
@@ -49,7 +66,7 @@ admin.site.register(Sku,SkuAdmin)
 
 
 class TableAdmin(admin.ModelAdmin):
-    list_display = ('id','shop','number','isValid','peopleNumber','status','userId','waiterId')
+    list_display = ('id','shop','number','peopleNumber','status','userId','waiterId')
 
 admin.site.register(Table,TableAdmin)
 
@@ -61,17 +78,11 @@ admin.site.register(Order,OrderAdmin)
 
 class OrderSkuAdmin(admin.ModelAdmin):
     list_display = ('id','order','categoryId','tableId','tableNumber','skuId','skuName','skuPrice', 'skuSizeName',
-                    'skuQuantity','status','cookId','cookName','serveId','serveName')
+                    'skuQuantity','status','cookId','cookName','beforeCookId','beforeCookName','orderSeparateId',
+                    'orderSeparateName','afterCookId','afterCookName','serveId','serveName')
 
 admin.site.register(OrderSku,OrderSkuAdmin)
 
-
-class OrderSkuBackupAdmin(admin.ModelAdmin):
-    list_display = ('id','orderId','orderSkuId','categoryId','tableId','tableNumber','skuId','skuName','skuPrice',
-                    'skuSizeName',
-'skuQuantity','status','cookId','cookName','serveId','serveName')
-
-admin.site.register(OrderSkuBackup,OrderSkuBackupAdmin)
 
 class OrderRecordAdmin(admin.ModelAdmin):
     list_display = ('id','order','record','date')
@@ -100,6 +111,21 @@ class CookFeedBackAdmin(admin.ModelAdmin):
     list_display = ('cook','msg')
 
 admin.site.register(CookFeedBack,CookFeedBackAdmin)
+
+class OrderSeparateFeedBackAdmin(admin.ModelAdmin):
+    list_display = ('orderSeparate','msg')
+
+admin.site.register(OrderSeparateFeedBack,OrderSeparateFeedBackAdmin)
+
+class BeforeCookFeedBackAdmin(admin.ModelAdmin):
+    list_display = ('beforeCook','msg')
+
+admin.site.register(BeforeCookFeedBack,BeforeCookFeedBackAdmin)
+
+class AfterCookFeedBackAdmin(admin.ModelAdmin):
+    list_display = ('afterCook','msg')
+
+admin.site.register(AfterCookFeedBack,AfterCookFeedBackAdmin)
 
 class ServeFeedBackAdmin(admin.ModelAdmin):
     list_display = ('serve','msg')

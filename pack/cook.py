@@ -61,7 +61,7 @@ def cookAddInfo(request):
     cook.everSetInfo = True
     cook.save()
     response['code'] = 0
-    response['data'] = {'type':'1','cookId':str(cook .id)}
+    response['data'] = {'type':'4','cookId':str(cook .id)}
     return HttpResponse(json.dumps(response),content_type="application/json")
 
 
@@ -230,12 +230,10 @@ def alterCookName(request):
 
     _name = request.REQUEST.get('name')
 
-
     if _name == None or _name == '':
         response['code'] = -1
         response['errorMsg'] = '请输入店铺名字'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-
 
     cook.name = _name
     cook.save()
@@ -374,45 +372,45 @@ def cookFeedback(request):
 
 
 
-@csrf_exempt
-def cookUpdateClientID(request):
-    response = {}
-    response['data'] = {}
-    response['errorMsg'] = ""
-    _cookId = request.session.get('cookId')
-    if not _cookId:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    ##################JUDGE############
-    _lastLoginTime = request.session.get('lastLoginTime')
-    if not _lastLoginTime:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    try:
-        cook = Cook.objects.get(id = _cookId)
-    except ObjectDoesNotExist:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    if _lastLoginTime != cook.lastLoginTime:
-        response['code'] = 1
-        response['errorMsg'] = '上次登录失效，请重新登录'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    ####################END#################
-
-
-    _clientID = request.REQUEST.get('clientID')
-    if _clientID == None or _clientID == '':
-        response['code'] = -1
-        response['errorMsg'] = '请上传clientID'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-
-    if cook.clientID != _clientID:
-        cook.clientID = _clientID
-        cook.save()
-    response['code'] = 0
-    response['data'] = {'clientID':_clientID}
-    response['errorMsg'] = ''
-    return HttpResponse(json.dumps(response),content_type="application/json")
+# @csrf_exempt
+# def cookUpdateClientID(request):
+#     response = {}
+#     response['data'] = {}
+#     response['errorMsg'] = ""
+#     _cookId = request.session.get('cookId')
+#     if not _cookId:
+#         response['code'] = 1
+#         response['errorMsg'] = '请先登录'
+#         return HttpResponse(json.dumps(response),content_type="application/json")
+#     ##################JUDGE############
+#     _lastLoginTime = request.session.get('lastLoginTime')
+#     if not _lastLoginTime:
+#         response['code'] = 1
+#         response['errorMsg'] = '请先登录'
+#         return HttpResponse(json.dumps(response),content_type="application/json")
+#     try:
+#         cook = Cook.objects.get(id = _cookId)
+#     except ObjectDoesNotExist:
+#         response['code'] = 1
+#         response['errorMsg'] = '请先登录'
+#         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+#     if _lastLoginTime != cook.lastLoginTime:
+#         response['code'] = 1
+#         response['errorMsg'] = '上次登录失效，请重新登录'
+#         return HttpResponse(json.dumps(response),content_type="application/json")
+#     ####################END#################
+#
+#
+#     _clientID = request.REQUEST.get('clientID')
+#     if _clientID == None or _clientID == '':
+#         response['code'] = -1
+#         response['errorMsg'] = '请上传clientID'
+#         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+#
+#     if cook.clientID != _clientID:
+#         cook.clientID = _clientID
+#         cook.save()
+#     response['code'] = 0
+#     response['data'] = {'clientID':_clientID}
+#     response['errorMsg'] = ''
+#     return HttpResponse(json.dumps(response),content_type="application/json")

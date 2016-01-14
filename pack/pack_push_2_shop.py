@@ -43,19 +43,13 @@ HOST = 'http://sdk.open.api.igexin.com/apiex.htm'
 DEVICETOKEN = ""
 
 
-def pushAPNToShop(deviceToken,type, orderId):
+def pushAPNToShop(deviceToken,type,_payload):
     push = IGeTui(HOST, APPKEY, MASTERSECRET)
     message = IGtSingleMessage()
     template = APNTemplate()
     if type == '0':
-        template.setPushInfo("查看",0,"您收到了新订单","","","","","",1)
-    elif type == '2':
-        _payload = '{"orderId":"'+str(orderId)+'"}'
-        template.setPushInfo("查看",0,"您有订单取消","",_payload,"","","",1)
-    elif type == '4':
-        template.setPushInfo("查看",0,"您收到了新订单","","","","","",1)
+        template.setPushInfo("查看",0,"您收到了新订单","",_payload,"","","",1)
     elif type == '6':
-        _payload = '{"orderId":"'+str(orderId)+'"}'
         template.setPushInfo("查看",0,"您有订单支付成功","",_payload,"","","",1)
 
     #单个用户推送接口
@@ -74,7 +68,7 @@ def pushAPNToShop(deviceToken,type, orderId):
     #print ret
 
 
-def pushMessageToSingle(CID,type,data):
+def pushMessageToSingle(CID,payload):
     print(APPKEY)
     push = IGeTui(HOST, APPKEY, MASTERSECRET)
     #消息模版：
@@ -85,7 +79,7 @@ def pushMessageToSingle(CID,type,data):
 
     #template = NotificationTemplateDemo()
     #template = LinkTemplateDemo()
-    template = TransmissionTemplateDemo(type,data)
+    template = TransmissionTemplateDemo(payload)
     #template = NotyPopLoadTemplateDemo()
 	
     message = IGtSingleMessage()
@@ -205,50 +199,19 @@ def LinkTemplateDemo():
 import logging
 
 #透传模板动作内容
-def TransmissionTemplateDemo(type,data):
+def TransmissionTemplateDemo(payload):
     logger = logging.getLogger('Pack.app')
-    logger.info('data:')
-    logger.info(data)
+    logger.info('payload:')
+    logger.info(payload)
     template = TransmissionTemplate()
     template.transmissionType = 2
     template.appId = APPID
     template.appKey = APPKEY
-    response = {}
-    response['type'] = type
-    if type == '0':
-        response['content'] = '您收到了新订单'
-        response['title'] = '新订单'
-        response['subType'] = ''
-        response['data'] = data
-        logger.info('response----------------')
-        logger.info(response)
-        print response
-    elif type == '1':
-        response['content'] = '您有订单被取消了，请及时查看'
-        response['title'] = '订单取消'
-        response['data'] = data
-        response['subType'] = ''
-    # elif type == '2':
-    #     response['content'] = '您有订单完成了，请查看'
-    #     response['title'] = '订单完成'
-    #     response['subType'] = ''
-    # elif type == '1000':
-    #     response['content'] = '店家备好货啦，请来取货'
-    #     response['title'] = '订单准备完毕'
-    #     response['subType'] = ''
-    # elif type == '1001':
-    #     response['content'] = '您的订单被店家取消了'
-    #     response['title'] = '订单取消'
-    #     response['subType'] = ''
-    # elif type == '1002':
-    #     response['content'] = '您有订单未领取，请及时领取'
-    #     response['title'] = '订单提醒'
-    #     response['subType'] = ''
-    response = json.dumps(response)
-    template.transmissionContent = response
+
+    template.transmissionContent = payload
     #iOS 推送需要的PushInfo字段 前三项必填，后四项可以填空字符串
     #template.setPushInfo(actionLocKey, badge, message, sound, payload, locKey, locArgs, launchImage)
-    template.setPushInfo("actionLocKey",1,"这是一条消息","","{badge:1}","","","",1);
+    #template.setPushInfo("actionLocKey",1,"这是一条消息","","{badge:1}","","","",1);
     return template
 
 #通知弹框下载模板动作内容

@@ -2,13 +2,13 @@ __author__ = 'mike'
 #encoding:utf-8
 from django.http import HttpResponse
 import sys,json,datetime
-from pack.models import Order,Waiter,OrderSku,Table,OrderRecord,User,OrderSkuBackup
+from pack.models import Order,Waiter,OrderSku,Table,OrderRecord,User,OrderSku
 from django.views.decorators.csrf import csrf_exempt
 import logging
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from pack.pack_push_2_user import pushAPNToUser,pushMessageToSingle
-from pack.tasks import syncOrderSkuToCook
+from pack.tasks import waiterPushMessage
 import pytz
 
 reload(sys)
@@ -48,6 +48,7 @@ def submitOrder(request):
     _tableId = request.REQUEST.get('tableId')
     _priceTotal = request.REQUEST.get('priceTotal')
     _categoryIdList = request.REQUEST.getlist('categoryIdList[]')
+    _categoryTypeList = request.REQUEST.getlist('categoryTypeList[]')
     _skuIdList = request.REQUEST.getlist('skuIdList[]')
     _skuNameList = request.REQUEST.getlist('skuNameList[]')
     _skuQuantityList = request.REQUEST.getlist('skuQuantityList[]')
@@ -65,6 +66,10 @@ def submitOrder(request):
         response['errorMsg'] = '获取总计价格失败'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
     if _categoryIdList == None or _categoryIdList == '':
+        response['code'] = -1
+        response['errorMsg'] = '请输入对应关系'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    if _categoryTypeList == None or _categoryTypeList == '':
         response['code'] = -1
         response['errorMsg'] = '请输入对应关系'
         return HttpResponse(json.dumps(response),content_type="application/json")
@@ -90,20 +95,20 @@ def submitOrder(request):
         return HttpResponse(json.dumps(response),content_type="application/json")
 
     logger.info(len(_categoryIdList))
+    logger.info(len(_categoryTypeList))
     logger.info(len(_skuIdList))
     logger.info(len(_skuNameList))
     logger.info(len(_skuSizeNameList))
     logger.info(len(_skuQuantityList))
     logger.info(len(_skuPriceList))
-    if len(_categoryIdList) != len(_skuIdList) or len(_categoryIdList) != len(_skuNameList) \
+    if len(_categoryIdList) != len(_skuIdList) or len(_categoryIdList) != len(_categoryTypeList)\
+            or len(_categoryIdList) != len(_skuNameList) \
             or len(_categoryIdList)!=len(_skuQuantityList) or len(_categoryIdList) != len(_skuSizeNameList) \
             or len(_categoryIdList) != len(_skuPriceList):
         response['code'] = -1
         response['errorMsg'] = '对应关系错误'
         return HttpResponse(json.dumps(response),content_type="application/json")
 
-    # __categoryList = json.loads(_categoryList)
-    # print __categoryList
     try:
         table = Table.objects.select_related().get(id = _tableId)
     except ObjectDoesNotExist:
@@ -114,96 +119,12 @@ def submitOrder(request):
         response['code'] = -1
         response['errorMsg'] = '请先锁定餐桌，然后下单'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    elif table.status == '1':
-        order = Order(shopId = str(waiter.shop.id),waiterId=str(waiter.id),waiterName=str(waiter.name), userId = str(
-            table.userId),priceTotal =str(_priceTotal),tableId = str(table.id), tableNumber = str(table.number),
-            status = '0',date =datetime.datetime.now())
-        order.save()
-        table.status = '3'
-        # table.userId = ''
-        # table.waiterId = ''
-        table.save()
-        submitRecord = u'点菜成功，订单号为：'.encode('utf-8')
-        submitRecord = submitRecord + str(order.id)
-        submitRecord = submitRecord + u'，桌号为：'.encode('utf-8')
-        submitRecord = submitRecord + str(table.number)
-        record = OrderRecord(record = submitRecord,order=order,date = datetime.datetime.now())
-        record.save()
-
-        _orderSkuList = []
-        for index in range(len(_categoryIdList)):
-            categoryId = _categoryIdList[index]
-            skuId = _skuIdList[index]
-            skuName = _skuNameList[index]
-            skuQuantity = _skuQuantityList[index]
-            skuSize = _skuSizeNameList[index]
-            skuPrice = _skuPriceList[index]
-            _orderSkuList.append(OrderSku(order = order,shopId = str(waiter.shop.id),tableId = str(table.id),
-                                          tableNumber = str(table.number),categoryId = str(categoryId),skuId=(skuId),
-                                          skuName=str(skuName), skuQuantity=int(skuQuantity), skuSizeName = str(skuSize),
-                                          skuPrice = float(skuPrice),status = '0'))
-        # for category in __categoryList:
-        #     categoryId = category['categoryId']
-        #     skuList = category['skuList']
-        #     for sku in skuList:
-        #         _id = sku['skuId']
-        #         _name = sku['skuName']
-        #         _quantity = sku['skuQuantity']
-        #         _sizeName = sku['skuSizeName']
-        #         _price = sku['skuPrice']
-        #         _orderSkuList.append(OrderSku(order = order,shopId = str(waiter.shop.id),tableId = str(table.id) ,
-        #                 tableNumber = str(table.number),categoryId = str(categoryId),skuId = _id,skuName = _name,
-        #                 skuQuantity = int(_quantity),skuSizeName =_sizeName,skuPrice = _price,status = '0'))
-        OrderSku.objects.bulk_create(_orderSkuList)
-        syncOrderSkuToCook.delay(str(order.id))
-
-        response_data = {}
-        _order = {}
-        _order['orderId'] = order.id
-        _order['priceTotal'] = float(order.priceTotal)
-        _order['status'] = order.status
-        shanghai_tz = pytz.timezone('Asia/Shanghai')
-        _order['dateTime'] = order.date.strftime('%Y/%m/%d %H:%M:%S')
-
-        _table = {}
-        _table['tableId'] = table.id
-        _table['tableNumber'] = table.number.encode('utf-8')
-        _table['tablePeopleNumber'] = table.peopleNumber
-        _table['tableStatus'] = table.status
-        _order['tableInfo'] = _table
-        response_data['tableInfo'] = _table
-
-        _waiter_Info = {}
-        _waiter_Info['waiterId'] = str(order.waiterId)
-        _waiter_Info['waiterName'] = str(order.waiterName)
-        _order['waiterInfo'] = _waiter_Info
-        response_data['waiterInfo'] = _waiter_Info
-
-        _skuList = []
-        orderSkuQuery = order.ordersku_set.all().order_by('-id')
-        for orderSku in orderSkuQuery:
-            _sku = {}
-            _sku['orderSkuId'] = orderSku.id
-            _sku['skuId'] = orderSku.skuId
-            _sku['skuName'] = orderSku.skuName.encode('utf-8')
-            _sku['skuPrice'] = float(orderSku.skuPrice)
-            _sku['skuSizeName'] = str(orderSku.skuSizeName)
-            _sku['skuQuantity'] = float(orderSku.skuQuantity)
-            _sku['skuStatus'] = orderSku.status
-            _skuList.append(_sku)
-        _order['orderSkuList'] = _skuList
-        response_data['orderInfo'] = _order
-        response['data'] = response_data
-        response['code'] = 0
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
     elif table.status == '2' and table.waiterId == str(waiter.id):
         order = Order(shopId = str(waiter.shop.id),waiterId=str(waiter.id),waiterName=str(waiter.name),
                 priceTotal =str(_priceTotal),tableId = str(table.id), tableNumber = str(table.number),status = '0',
                 date =datetime.datetime.now())
         order.save()
         table.status = '3'
-        # table.userId = ''
-        # table.waiterId = ''
         table.save()
         submitRecord = u'点菜成功，订单号为：'.encode('utf-8')
         submitRecord = submitRecord + str(order.id)
@@ -215,19 +136,22 @@ def submitOrder(request):
         _orderSkuList = []
         for index in range(len(_categoryIdList)):
             categoryId = _categoryIdList[index]
+            categoryType = _categoryTypeList[index]
             skuId = _skuIdList[index]
             skuName = _skuNameList[index]
             skuQuantity = _skuQuantityList[index]
             skuSize = _skuSizeNameList[index]
             skuPrice = _skuPriceList[index]
             _orderSkuList.append(OrderSku(order = order,shopId = str(waiter.shop.id),tableId = str(table.id),
-                                          tableNumber = str(table.number),categoryId = str(categoryId),skuId=(skuId),
+                                          tableNumber = str(table.number),categoryId = str(categoryId),
+                                          categoryType = str(categoryType),
+                                          skuId=(skuId),
                                           skuName=str(skuName),
                                           skuQuantity=int(skuQuantity),
                                           skuSizeName = str(skuSize),
                                           skuPrice = float(skuPrice),status = '0'))
         OrderSku.objects.bulk_create(_orderSkuList)
-        syncOrderSkuToCook.delay(str(order.id))
+        waiterPushMessage.delay(str(order.id))
 
         response_data = {}
         _order = {}
@@ -309,6 +233,7 @@ def addSkusWithOrder(request):
     _orderId = request.REQUEST.get('orderId')
     _priceTotal = request.REQUEST.get('priceTotal')
     _categoryIdList = request.REQUEST.getlist('categoryIdList[]')
+    _categoryTypeList = request.REQUEST.getlist('categoryTypeList[]')
     _skuIdList = request.REQUEST.getlist('skuIdList[]')
     _skuNameList = request.REQUEST.getlist('skuNameList[]')
     _skuQuantityList = request.REQUEST.getlist('skuQuantityList[]')
@@ -324,6 +249,10 @@ def addSkusWithOrder(request):
         response['errorMsg'] = '获取orderId失败'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
     if _categoryIdList == None or _categoryIdList == '':
+        response['code'] = -1
+        response['errorMsg'] = '请输入对应关系'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    if _categoryTypeList == None or _categoryTypeList == '':
         response['code'] = -1
         response['errorMsg'] = '请输入对应关系'
         return HttpResponse(json.dumps(response),content_type="application/json")
@@ -348,7 +277,8 @@ def addSkusWithOrder(request):
         response['errorMsg'] = '请输入对应关系'
         return HttpResponse(json.dumps(response),content_type="application/json")
 
-    if len(_categoryIdList) != len(_skuIdList) or len(_categoryIdList) != len(_skuNameList) \
+    if len(_categoryIdList) != len(_skuIdList) or len(_categoryIdList) != len(_categoryTypeList)\
+            or len(_categoryIdList) != len(_skuNameList) \
             or len(_categoryIdList)!=len(_skuQuantityList) or len(_categoryIdList) != len(_skuSizeNameList) \
             or len(_categoryIdList) != len(_skuPriceList):
         response['code'] = -1
@@ -376,17 +306,20 @@ def addSkusWithOrder(request):
         _orderSkuList = []
         for index in range(len(_categoryIdList)):
             categoryId = _categoryIdList[index]
+            categoryType = _categoryTypeList[index]
             skuId = _skuIdList[index]
             skuName = _skuNameList[index]
             skuQuantity = _skuQuantityList[index]
             skuSize = _skuSizeNameList[index]
             skuPrice = _skuPriceList[index]
             _orderSkuList.append(OrderSku(order = order,shopId = str(waiter.shop.id),tableId = str(order.tableId),
-                                          tableNumber = str(order.tableNumber),categoryId=str(categoryId),skuId=(skuId),
+                                          tableNumber = str(order.tableNumber),categoryId=str(categoryId),
+                                          categoryType = str(categoryType),
+                                          skuId=str(skuId),
                                           skuName=str(skuName), skuQuantity=int(skuQuantity), skuSizeName = str(skuSize),
                                           skuPrice = float(skuPrice),status = '0'))
         OrderSku.objects.bulk_create(_orderSkuList)
-        syncOrderSkuToCook.delay(str(order.id))
+        waiterPushMessage.delay(str(order.id))
 
         try:
             table = Table.objects.select_related().get(id = str(order.tableId))
@@ -478,71 +411,54 @@ def waiterCancelOrderSku(request):
         return HttpResponse(json.dumps(response),content_type="application/json")
     _orderSkuId = str(_orderSkuId)
     logger.info(_orderSkuId)
-    orderSKuBackupQuery = OrderSkuBackup.objects.filter(orderSkuId = _orderSkuId)
-    if not orderSKuBackupQuery.exists():
+    orderSkuQuery = OrderSku.objects.filter(orderSkuId = _orderSkuId)
+    if orderSkuQuery[0].status == '6':
         response['code'] = -1
-        response['errorMsg'] = '未查找到该菜品，取消失败'
+        response['errorMsg'] = '厨师正在做菜，无法取消'
         return HttpResponse(json.dumps(response),content_type="application/json")
-    if orderSKuBackupQuery[0].status == '2':
+    elif orderSkuQuery[0].status == '8':
         response['code'] = -1
-        response['errorMsg'] = '厨师正在做菜，取消失败'
+        response['errorMsg'] = '上菜员正在上菜，无法取消'
         return HttpResponse(json.dumps(response),content_type="application/json")
-    elif orderSKuBackupQuery[0].status == '4':
-        response['code'] = -1
-        response['errorMsg'] = '上菜员正在上菜，取消失败'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    elif orderSKuBackupQuery[0].status == '6':
+    elif orderSkuQuery[0].status == '10':
         response['code'] = -1
         response['errorMsg'] = '已经上过菜啦'
         return HttpResponse(json.dumps(response),content_type="application/json")
-    elif orderSKuBackupQuery[0].status == '200':
+    elif orderSkuQuery[0].status == '200':
         response['code'] = -1
         response['errorMsg'] = '该菜品已经取消'
         return HttpResponse(json.dumps(response),content_type="application/json")
-    elif orderSKuBackupQuery[0].status == '0':
-        orderSKuBackupQuery.delete()
-        try:
-            orderSku = OrderSku.objects.select_related().get(id = _orderSkuId)
-        except ObjectDoesNotExist:
-            response['code'] = -1
-            response['errorMsg'] = '查询orderSku失败'
-            return HttpResponse(json.dumps(response),content_type="application/json")
-        if orderSku.status == '0':
-            orderSku.status = '200'
-            orderSku.save()
-            skuTotalPrice = float(orderSku.skuPrice) * int(orderSku.skuQuantity)
-            order = orderSku.order
-            order.priceTotal = float(order.priceTotal) - skuTotalPrice
-            order.save()
-            response_data = {}
-            _order = {}
-            _order['orderId'] = order.id
-            _order['priceTotal'] = float(order.priceTotal)
-            _order['status'] = order.status
-            shanghai_tz = pytz.timezone('Asia/Shanghai')
-            _order['dateTime'] = order.date.astimezone(shanghai_tz).strftime('%Y/%m/%d %H:%M:%S')
-            response_data['orderInfo'] = _order
+    else:
+        orderSku = orderSkuQuery[0]
+        orderSku.status = '200'
+        orderSku.save()
+        skuTotalPrice = float(orderSku.skuPrice) * int(orderSku.skuQuantity)
+        order = orderSku.order
+        order.priceTotal = float(order.priceTotal) - skuTotalPrice
+        order.save()
+        response_data = {}
+        _order = {}
+        _order['orderId'] = order.id
+        _order['priceTotal'] = float(order.priceTotal)
+        _order['status'] = order.status
+        shanghai_tz = pytz.timezone('Asia/Shanghai')
+        _order['dateTime'] = order.date.astimezone(shanghai_tz).strftime('%Y/%m/%d %H:%M:%S')
+        response_data['orderInfo'] = _order
 
-            _sku = {}
-            _sku['orderSkuId'] = orderSku.id
-            _sku['skuId'] = orderSku.skuId
-            _sku['skuName'] = orderSku.skuName.encode('utf-8')
-            _sku['skuPrice'] = float(orderSku.skuPrice)
-            _sku['skuSizeName'] = str(orderSku.skuSizeName)
-            _sku['skuQuantity'] = float(orderSku.skuQuantity)
-            _sku['skuStatus'] = orderSku.status
-            response_data['orderSkuInfo'] = _sku
+        _sku = {}
+        _sku['orderSkuId'] = orderSku.id
+        _sku['skuId'] = orderSku.skuId
+        _sku['skuName'] = orderSku.skuName.encode('utf-8')
+        _sku['skuPrice'] = float(orderSku.skuPrice)
+        _sku['skuSizeName'] = str(orderSku.skuSizeName)
+        _sku['skuQuantity'] = float(orderSku.skuQuantity)
+        _sku['skuStatus'] = orderSku.status
+        response_data['orderSkuInfo'] = _sku
 
-            response['code'] = 0
-            response['data'] = response_data
-            return HttpResponse(json.dumps(response),content_type="application/json")
-        elif orderSku.status == '200':
-            response['code'] = 0
-            return HttpResponse(json.dumps(response),content_type="application/json")
-        else:
-            response['code'] = -1
-            response['errorMsg'] = 'orderSku状态错误'
-            return HttpResponse(json.dumps(response),content_type="application/json")
+        response['code'] = 0
+        response['data'] = response_data
+        return HttpResponse(json.dumps(response),content_type="application/json")
+
 
 @csrf_exempt
 def waiterFinishOrder(request):
@@ -590,14 +506,14 @@ def waiterFinishOrder(request):
         if order.userId == '':
             orderSkuQuery = order.ordersku_set.all().order_by('-id')
             logger.info(orderSkuQuery)
-            orderSkuQuery = orderSkuQuery.exclude(status = '6').exclude(status = '200')
+            orderSkuQuery = orderSkuQuery.exclude(status = '10').exclude(status = '200')
             logger.info(orderSkuQuery)
             if len(orderSkuQuery) != 0:
                 response['code'] = -1
                 response['errorMsg'] = '有未处理菜品'
                 return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
 
-            order.status = '6'
+            order.status = '4'
             order.save()
             submitRecord = u'就餐完毕'.encode('utf-8')
             record = OrderRecord(record = submitRecord,order=order,date = datetime.datetime.now())
@@ -629,11 +545,8 @@ def waiterFinishOrder(request):
             response['data'] = response_data
             return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
         else:
-            order.status = '2'
+            order.status = '4'
             order.save()
-            submitRecord = u'就餐完毕,待支付'.encode('utf-8')
-            record = OrderRecord(record = submitRecord,order=order,date = datetime.datetime.now())
-            record.save()
             try:
                 user = User.objects.get(id = str(order.userId))
             except ObjectDoesNotExist:
@@ -693,9 +606,9 @@ def waiterGetShopDoingOrderList(request):
 
     _orderId = str(_orderId)
     if _orderId == '0':
-        orderQuery = Order.objects.filter(waiterId =str(waiter.id)).filter(Q(status = '0') | Q (status = '2') )
+        orderQuery = Order.objects.filter(waiterId =str(waiter.id)).filter(Q(status = '0') | Q (status = '4') )
     else:
-        orderQuery = Order.objects.filter(waiterId =str(waiter.id)).filter(Q(status = '0') | Q (status = '2') ).filter(id__lt = _orderId)
+        orderQuery = Order.objects.filter(waiterId =str(waiter.id)).filter(Q(status = '0') | Q (status = '4')).filter(id__lt = _orderId)
     orders = orderQuery.reverse()[0:0+_limit]
     orderList = []
     for order in orders:

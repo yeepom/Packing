@@ -50,6 +50,7 @@ def waiterGetShopSkus(request):
         response_category = {}
         response_category['categoryId'] = category.id
         response_category['categoryName'] = category.categoryName
+        response_category['categoryType'] = category.categoryType
         skus = category.sku_set.filter(isValid=True).order_by('id')
         response_category_skus = []
         for sku in skus:

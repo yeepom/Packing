@@ -221,47 +221,6 @@ def verifyTelephone(request):
     response['data'] = response_data
     return HttpResponse(json.dumps(response),content_type="application/json")
 
-@csrf_exempt
-def updateClientID(request):
-    response = {}
-    response['data'] = {}
-    response['errorMsg'] = ''
-    _userId = request.session.get('userId')
-    print request
-    if not _userId:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    ##################JUDGE############
-    _lastLoginTime = request.session.get('lastLoginTime')
-    if not _lastLoginTime:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    try:
-        user = User.objects.get(id = _userId)
-    except ObjectDoesNotExist:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    if _lastLoginTime != user.lastLoginTime:
-        response['code'] = 1
-        response['errorMsg'] = '上次登录失效，请重新登录'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    ####################END#################
-
-    _clientID = request.REQUEST.get('clientID')
-    if _clientID == None or _clientID == '':
-        response['code'] = 100
-        response['errorMsg'] = '重新上传clientID'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-
-    if user.clientID != _clientID:
-        user.clientID = _clientID
-        user.save()
-    response['code'] = 0
-    response['data'] = {}
-    return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
 
 @csrf_exempt
 def userGetInfo(request):
@@ -435,3 +394,45 @@ def userFeedback(request):
     response['code'] = 0
     return HttpResponse(json.dumps(response),content_type="application/json")
 
+@csrf_exempt
+def userUpdateClientID(request):
+    response = {}
+    response['data'] = {}
+    response['errorMsg'] = ""
+    _userId = request.session.get('userId')
+    if not _userId:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    ##################JUDGE############
+    _lastLoginTime = request.session.get('lastLoginTime')
+    if not _lastLoginTime:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    try:
+        user = User.objects.get(id = _userId)
+    except ObjectDoesNotExist:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+    if _lastLoginTime != user.lastLoginTime:
+        response['code'] = 1
+        response['errorMsg'] = '上次登录失效，请重新登录'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    ####################END#################
+
+
+    _clientID = request.REQUEST.get('clientID')
+    if _clientID == None or _clientID == '':
+        response['code'] = -1
+        response['errorMsg'] = '请上传clientID'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+
+    if user.clientID != _clientID:
+        user.clientID = _clientID
+        user.save()
+    response['code'] = 0
+    response['data'] = {'clientID':_clientID}
+    response['errorMsg'] = ''
+    return HttpResponse(json.dumps(response),content_type="application/json")
