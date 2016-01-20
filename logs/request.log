@@ -12272,3 +12272,379 @@ Traceback (most recent call last):
   File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
     % (callback.__module__, view_name))
 ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-16 19:28:20,678 [Thread-1:18412] [django.request:231] [ERROR]- Internal Server Error: /testPushIOS
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPushIOS didn't return an HttpResponse object. It returned None instead.
+2016-01-16 19:29:15,427 [Thread-3:8] [django.request:231] [ERROR]- Internal Server Error: /testPushIOS
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPushIOS didn't return an HttpResponse object. It returned None instead.
+2016-01-16 19:33:25,723 [Thread-1:8288] [django.request:231] [ERROR]- Internal Server Error: /testPushIOS
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPushIOS didn't return an HttpResponse object. It returned None instead.
+2016-01-16 19:35:02,118 [Thread-1:6664] [django.request:231] [ERROR]- Internal Server Error: /testPushIOS
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPushIOS didn't return an HttpResponse object. It returned None instead.
+2016-01-16 21:52:32,625 [Thread-1:11236] [django.request:231] [ERROR]- Internal Server Error: /testPushViaClientID
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\orderSeparate_order.py", line 84, in testPushViaClientID
+    pushRst = pushMessageToSingle("dcd7b53c18bc756642d883f192ffc063",'{"method":"pushToServe"}')
+TypeError: pushMessageToSingle() takes exactly 3 arguments (2 given)
+2016-01-16 23:08:46,474 [Thread-1:12432] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-16 23:08:50,755 [Thread-3:18096] [django.request:143] [WARNING]- Not Found: /favicon.ico
+2016-01-16 23:08:50,884 [Thread-4:14948] [django.request:143] [WARNING]- Not Found: /favicon.ico
+2016-01-16 23:08:57,680 [Thread-5:16712] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-16 23:10:12,763 [Thread-6:12484] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-16 23:10:22,114 [Thread-7:12736] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-16 23:10:34,980 [Thread-8:14052] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-16 23:11:44,375 [Thread-9:9664] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-16 23:12:13,749 [Thread-10:11308] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-16 23:12:32,946 [Thread-11:18532] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 10:46:58,635 [Thread-1:14040] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 10:47:05,693 [Thread-3:17704] [django.request:143] [WARNING]- Not Found: /favicon.ico
+2016-01-17 10:47:05,977 [Thread-4:8804] [django.request:143] [WARNING]- Not Found: /favicon.ico
+2016-01-17 10:47:31,586 [Thread-5:7716] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 10:47:45,144 [Thread-6:1672] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 10:49:16,513 [Thread-7:4476] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 10:59:06,582 [Thread-8:8636] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 11:01:19,174 [Thread-9:12732] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 11:03:25,665 [Thread-10:8944] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 11:07:07,999 [Thread-11:9872] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 11:23:48,594 [Thread-12:18672] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 11:26:28,609 [Thread-13:17876] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 11:41:38,634 [Thread-14:13612] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 11:42:12,969 [Thread-15:17044] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 11:53:19,013 [Thread-16:16888] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 11:58:57,950 [Thread-17:12688] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 12:02:11,434 [Thread-18:7912] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 14:11:48,121 [Thread-19:8412] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 14:20:00,963 [Thread-20:19328] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 14:20:29,970 [Thread-21:12880] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 14:20:44,230 [Thread-22:12140] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 14:21:53,821 [Thread-23:16984] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 14:25:16,759 [Thread-24:19600] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 14:40:53,576 [Thread-1:6060] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 15:04:33,200 [Thread-1:18236] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 15:04:37,500 [Thread-3:13668] [django.request:143] [WARNING]- Not Found: /favicon.ico
+2016-01-17 15:04:37,601 [Thread-4:21436] [django.request:143] [WARNING]- Not Found: /favicon.ico
+2016-01-17 15:04:54,168 [Thread-5:1848] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 15:05:04,285 [Thread-6:19480] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 15:06:11,183 [Thread-7:19296] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 15:06:21,058 [Thread-8:20116] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 15:15:43,430 [Thread-9:14780] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 15:18:31,994 [Thread-14:3352] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-17 15:19:00,717 [Thread-15:20428] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.
+2016-01-19 17:16:22,181 [Thread-3:24568] [django.request:143] [WARNING]- Not Found: /favicon.ico
+2016-01-19 17:16:22,403 [Thread-4:20976] [django.request:143] [WARNING]- Not Found: /favicon.ico
+2016-01-19 18:13:33,773 [Thread-4:15376] [django.request:143] [WARNING]- Not Found: /ad
+2016-01-19 18:13:37,976 [Thread-6:31120] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 204, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 387, in index
+    model_dict['admin_url'] = reverse('admin:%s_%s_changelist' % info, current_app=self.name)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.serve.serveUpdateDeviceToken. View does not exist in module pack.serve.
+2016-01-19 18:17:09,923 [Thread-1:35748] [django.request:231] [ERROR]- Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 225, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\decorators.py", line 105, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 204, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\contrib\admin\sites.py", line 387, in index
+    model_dict['admin_url'] = reverse('admin:%s_%s_changelist' % info, current_app=self.name)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 522, in reverse
+    app_list = resolver.app_dict[ns]
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 329, in app_dict
+    self._populate()
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 303, in _populate
+    lookups.appendlist(pattern.callback, (bits, p_pattern, pattern.default_args))
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 231, in callback
+    self._callback = get_callable(self._callback_str)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\utils\lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\urlresolvers.py", line 118, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import pack.orderSeparate.orderSeparateUpdateDeviceToken. View does not exist in module pack.orderSeparate.
+2016-01-19 18:18:37,115 [Thread-26:8056] [django.request:143] [WARNING]- Not Found: /admin/waiter/
+2016-01-19 18:19:36,098 [Thread-54:28952] [django.request:231] [ERROR]- Internal Server Error: /shopVerifyTelephone
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.shop.shopVerifyTelephone didn't return an HttpResponse object. It returned None instead.
+2016-01-19 18:46:49,163 [Thread-3:33852] [django.request:231] [ERROR]- Internal Server Error: /testPushViaClientID
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\orderSeparate_order.py", line 84, in testPushViaClientID
+    pushRst = pushMessageToSingle("dcd7b53c18bc756642d883f192ffc063",'{"method":"pushNewOrdersToSaler"}','0')
+TypeError: pushMessageToSingle() takes exactly 2 arguments (3 given)
+2016-01-19 18:47:16,305 [Thread-4:37660] [django.request:231] [ERROR]- Internal Server Error: /testPushViaClientID
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\orderSeparate_order.py", line 84, in testPushViaClientID
+    pushRst = pushMessageToSingle("dcd7b53c18bc756642d883f192ffc063",'{"method":"pushNewOrdersToSaler"}')
+TypeError: pushMessageToSingle() takes exactly 2 arguments (3 given)
+2016-01-19 18:47:59,305 [Thread-1:22364] [django.request:231] [ERROR]- Internal Server Error: /testPushViaClientID
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\orderSeparate_order.py", line 84, in testPushViaClientID
+    pushRst = pushMessageToSingle("dcd7b53c18bc756642d883f192ffc063",'{"method":"pushNewOrdersToSaler"}')
+  File "D:\data\packing\pack\pack_push_2_shop.py", line 99, in pushMessageToSingle
+    ret = push.pushMessageToSingle(message, target)
+  File "D:\data\packing\pack\igt_push.py", line 41, in pushMessageToSingle
+    transparent = message.data.getTransparent()
+AttributeError: 'NoneType' object has no attribute 'getTransparent'
+2016-01-19 18:50:04,655 [Thread-1:6248] [django.request:231] [ERROR]- Internal Server Error: /testPushViaClientID
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\orderSeparate_order.py", line 84, in testPushViaClientID
+    pushRst = pushMessageToSingle("dcd7b53c18bc756642d883f192ffc063",'{"method":"pushNewOrdersToSaler"}')
+  File "D:\data\packing\pack\pack_push_2_shop.py", line 99, in pushMessageToSingle
+    ret = push.pushMessageToSingle(message, target)
+  File "D:\data\packing\pack\igt_push.py", line 41, in pushMessageToSingle
+    transparent = message.data.getTransparent()
+AttributeError: 'NoneType' object has no attribute 'getTransparent'
+2016-01-19 18:50:32,944 [Thread-3:20740] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\orderSeparate_order.py", line 74, in testPush
+    pushRst = pushMessageToSingle("bc8b02456bb6cc48842e2684e1fc8687",'{"method":"pushNewOrdersToSaler"}')
+  File "D:\data\packing\pack\pack_push_2_shop.py", line 99, in pushMessageToSingle
+    ret = push.pushMessageToSingle(message, target)
+  File "D:\data\packing\pack\igt_push.py", line 41, in pushMessageToSingle
+    transparent = message.data.getTransparent()
+AttributeError: 'NoneType' object has no attribute 'getTransparent'
+2016-01-19 18:53:50,549 [Thread-1:26512] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\orderSeparate_order.py", line 74, in testPush
+    pushRst = pushMessageToSingle("bc8b02456bb6cc48842e2684e1fc8687",'{"method":"pushNewOrdersToSaler"}','0')
+  File "D:\data\packing\pack\pack_push_2_shop.py", line 99, in pushMessageToSingle
+    ret = push.pushMessageToSingle(message, target)
+  File "D:\data\packing\pack\igt_push.py", line 41, in pushMessageToSingle
+    transparent = message.data.getTransparent()
+AttributeError: 'NoneType' object has no attribute 'getTransparent'
+2016-01-19 18:55:03,690 [Thread-1:33364] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\views\decorators\csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\data\packing\pack\orderSeparate_order.py", line 74, in testPush
+    pushRst = pushMessageToSingle("bc8b02456bb6cc48842e2684e1fc8687",'{"method":"pushNewOrdersToSaler"}','0')
+TypeError: pushMessageToSingle() takes exactly 2 arguments (3 given)
+2016-01-19 18:55:24,683 [Thread-1:24528] [django.request:231] [ERROR]- Internal Server Error: /testPush
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\django-1.7.1-py2.7.egg\django\core\handlers\base.py", line 130, in get_response
+    % (callback.__module__, view_name))
+ValueError: The view pack.orderSeparate_order.testPush didn't return an HttpResponse object. It returned None instead.

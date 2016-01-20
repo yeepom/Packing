@@ -75,6 +75,11 @@ def getShopOrderListWithTable(request):
     for order in orders:
         _order = {}
         _order['orderId'] = order.id
+        _tableInfo = {}
+        _tableInfo['tableId'] = order.tableId
+        _tableInfo['tableNumber'] = order.tableNumber
+        _order['tableInfo'] = _tableInfo
+
         _order['tableNumber'] = order.tableNumber
         _priceTotal = float(order.priceTotal)
         _order['priceTotal'] = str(_priceTotal)
@@ -137,7 +142,7 @@ def getShopOrderDetail(request):
     _order['dateTime'] = order.date.astimezone(shanghai_tz).strftime('%Y/%m/%d %H:%M:%S')
 
     _tableInfo = {}
-    _tableInfo['tableId'] = order.id
+    _tableInfo['tableId'] = order.tableId
     _tableInfo['tableNumber'] = order.tableNumber
     _order['tableInfo'] = _tableInfo
 
@@ -157,7 +162,7 @@ def getShopOrderDetail(request):
         _userInfo['userTelephone'] = user.telephone
         _order['userInfo'] = _userInfo
     _skuList = []
-    orderSkuQuery = OrderSku.objects.filter(order__id = order.id)
+    orderSkuQuery = OrderSku.objects.filter(order__id = order.id).order_by('id')
     for orderSku in orderSkuQuery:
         _sku = {}
         _sku['orderSkuId'] = orderSku.id
@@ -243,6 +248,10 @@ def getShopDoingOrderList(request):
         shanghai_tz = pytz.timezone('Asia/Shanghai')
         _order['dateTime'] = order.date.astimezone(shanghai_tz).strftime('%Y/%m/%d %H:%M:%S')
         _order['status'] = order.status
+        _tableInfo = {}
+        _tableInfo['tableId'] = order.tableId
+        _tableInfo['tableNumber'] = order.tableNumber
+        _order['tableInfo'] = _tableInfo
         orderList.append(_order)
     response['code'] = 0
     response['data'] = orderList

@@ -9,7 +9,8 @@ __author__ = 'wei'
 #4.增加了查询用户状态接口，
 #5.任务停止功能，
 #6.增加ToList接口每个用户返回用户状态的功能
-#更新时间为2014年08月30日
+#更新时间为2014年08
+# 月3mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm0日
 #1.IOS在设置setPushInfo为{"",-1,"","","","","",""} 会抛出异常，不允许设置
 #更新时间为2014年09月10日
 #1.增加APN简化版推送功能，推送接口apnPush()
@@ -38,26 +39,32 @@ APPID = "BjEqnfGEfL7nT5V4bvPAk1"
 APPKEY = "JyeKT2SXPX84aYZ79irCMA"
 MASTERSECRET = "Mc4sa7Rogd68T7HypAaG6"
 
-CID = "1111"
+CID = ""
 HOST = 'http://sdk.open.api.igexin.com/apiex.htm'
 DEVICETOKEN = ""
 
 
 def pushAPNToShop(deviceToken,type,_payload):
+    logger = logging.getLogger('Pack.app')
     push = IGeTui(HOST, APPKEY, MASTERSECRET)
     message = IGtSingleMessage()
     template = APNTemplate()
     if type == '0':
         template.setPushInfo("查看",0,"您收到了新订单","",_payload,"","","",1)
+    elif type == '2':
+        template.setPushInfo("查看",0,"有桌台增加了菜品，请刷新订单","",_payload,"","","",1)
+    elif type == '4':
+        template.setPushInfo("查看",0,"有桌台变更了菜品，请刷新订单","",_payload,"","","",1)
     elif type == '6':
         template.setPushInfo("查看",0,"您有订单支付成功","",_payload,"","","",1)
 
     #单个用户推送接口
     message.data = template
     ret = push.pushAPNMessageToSingle(APPID, deviceToken, message)
-    print ret
-    return ret
+    logger.info('ret:')
+    logger.info(ret)
 
+    return ret
     #多个用户推送接口
     #message = IGtListMessage()
     #message.data = template
@@ -69,6 +76,7 @@ def pushAPNToShop(deviceToken,type,_payload):
 
 
 def pushMessageToSingle(CID,payload):
+    logger = logging.getLogger('Pack.app')
     print(APPKEY)
     push = IGeTui(HOST, APPKEY, MASTERSECRET)
     #消息模版：
@@ -93,6 +101,8 @@ def pushMessageToSingle(CID,payload):
     target.clientId = CID
 
     ret = push.pushMessageToSingle(message, target)
+    logger.info('ret:')
+    logger.info(ret)
     print ret
     return ret
 
@@ -211,7 +221,10 @@ def TransmissionTemplateDemo(payload):
     template.transmissionContent = payload
     #iOS 推送需要的PushInfo字段 前三项必填，后四项可以填空字符串
     #template.setPushInfo(actionLocKey, badge, message, sound, payload, locKey, locArgs, launchImage)
-    #template.setPushInfo("actionLocKey",1,"这是一条消息","","{badge:1}","","","",1);
+    #if type == '0': #member
+    # template.setPushInfo("actionLocKey",1,"您有新订单","",payload,"","","",1)
+    #elif type == '1':   #saler
+     #   template.setPushInfo("actionLocKey",1,"您有新订单","",payload,"","","",1)
     return template
 
 #通知弹框下载模板动作内容

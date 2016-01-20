@@ -58,7 +58,7 @@ def addOrderSeparatesToCategory(request):
         response['code'] = -1
         response['errorMsg'] = '获取类别失败'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    if category.categoryType == '0' or category.categoryType == '1':
+    if category.categoryType == '0' or category.categoryType == '1' or category.categoryType == '2':
 
         response_orderSeparateList = []
         for _orderSeparateId in _orderSeparateList:
@@ -154,6 +154,10 @@ def removeOrderSeparateInCategory(request):
         response['code'] = -1
         response['errorMsg'] = '至少有一个配菜'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+    elif category.categoryType == '2' and orderSeparateCount <= 1:
+        response['code'] = -1
+        response['errorMsg'] = '至少有一个配菜'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
     elif category.categoryType == '0' and orderSeparateCount >1:
         try:
             orderSeparate = OrderSeparate.objects.get(id = _orderSeparateId)
@@ -171,6 +175,22 @@ def removeOrderSeparateInCategory(request):
             response['errorMsg'] = '该账号未关联'
             return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
     elif category.categoryType == '1' and orderSeparateCount >1:
+        try:
+            orderSeparate = OrderSeparate.objects.get(id = _orderSeparateId)
+        except ObjectDoesNotExist:
+            response['code'] = -1
+            response['errorMsg'] = '获取配菜失败'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        if str(orderSeparate.category.id) == _categoryId:
+            orderSeparate.category = None
+            orderSeparate.save()
+            response['code'] = 0
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        else:
+            response['code'] = -1
+            response['errorMsg'] = '该账号未关联'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+    elif category.categoryType == '2' and orderSeparateCount >1:
         try:
             orderSeparate = OrderSeparate.objects.get(id = _orderSeparateId)
         except ObjectDoesNotExist:

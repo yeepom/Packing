@@ -46,7 +46,7 @@ def addAfterCooksToCategory(request):
         response['errorMsg'] = '获取类别id失败'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
     _afterCookList = request.REQUEST.getlist('afterCookList[]')
-    if _afterCookList == None or _afterCookList == '':
+    if _afterCookList == []:
         response['code'] = -1
         response['errorMsg'] = '获取后打荷列表失败'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
@@ -59,6 +59,40 @@ def addAfterCooksToCategory(request):
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
     if category.categoryType == '0':
 
+        response_afterCookList = []
+        for _afterCookId in _afterCookList:
+            _afterCookId = str(_afterCookId)
+            try:
+                afterCook = AfterCook.objects.get(id = _afterCookId)
+            except ObjectDoesNotExist:
+                response['code'] = -1
+                response['errorMsg'] = '获取后打荷失败'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if afterCook.shopId != str(shop.id):
+                response['code'] = -1
+                response['errorMsg'] = '后打荷'+afterCook.name+'不在您的店铺下，您无权执行该操作'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if afterCook.category == category:
+                response['code'] = -1
+                response['errorMsg'] = '已经添加过啦'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            elif afterCook.category == None:
+                afterCook.category = category
+                afterCook.save()
+                _afterCook = {}
+                _afterCook['afterCookId'] = afterCook.id
+                _afterCook['afterCookName'] = afterCook.name
+                _afterCook['afterCookTelephone'] = afterCook.telephone
+                _afterCook['everAttachCategory'] = '1' if afterCook.category != None else '0'
+                response_afterCookList.append(_afterCook)
+            else:
+                response['code'] = -1
+                response['errorMsg'] = '已经与其他类别关联'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        response['code'] = 0
+        response['data'] = response_afterCookList
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+    elif category.categoryType == '1':
         response_afterCookList = []
         for _afterCookId in _afterCookList:
             _afterCookId = str(_afterCookId)
@@ -149,7 +183,27 @@ def removeAfterCookInCategory(request):
         response['code'] = -1
         response['errorMsg'] = '至少有一个后打荷'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+    elif category.categoryType == '1' and afterCookCount <= 1:
+        response['code'] = -1
+        response['errorMsg'] = '至少有一个后打荷'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
     elif category.categoryType == '0' and afterCookCount >1:
+        try:
+            afterCook = AfterCook.objects.get(id = _afterCookId)
+        except ObjectDoesNotExist:
+            response['code'] = -1
+            response['errorMsg'] = '获取后打荷失败'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        if str(afterCook.category.id) == _categoryId:
+            afterCook.category = None
+            afterCook.save()
+            response['code'] = 0
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        else:
+            response['code'] = -1
+            response['errorMsg'] = '该账号未关联'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+    elif category.categoryType == '1' and afterCookCount >1:
         try:
             afterCook = AfterCook.objects.get(id = _afterCookId)
         except ObjectDoesNotExist:

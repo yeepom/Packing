@@ -216,7 +216,7 @@ def waiterGetTableDetail(request):
         _order['waiterInfo'] = _waiter_Info
         response_data['waiterInfo'] = _waiter_Info
         _skuList = []
-        orderSkuQuery = order.ordersku_set.all().order_by('-id')
+        orderSkuQuery = order.ordersku_set.all().order_by('id')
         for orderSku in orderSkuQuery:
             _sku = {}
             _sku['orderSkuId'] = orderSku.id

@@ -7,7 +7,7 @@ class User(models.Model):
     telephone = models.CharField('电话',max_length=11,unique=True)
     name = models.CharField('昵称',max_length =100)
     headImage = models.CharField('头像',max_length = 100)
-    clientID = models.CharField(max_length = 40)
+    clientID = models.CharField(max_length = 100)
     lastLoginTime = models.CharField('上次登录时间',max_length = 13, default = '0')
     deviceToken = models.CharField('iOS设备号',max_length=64,default = '0')
     deviceInfo = models.CharField('设备名称（iOS、Android）',max_length = 20, default='none')
@@ -51,14 +51,14 @@ class Shop(models.Model):
     shopType = models.CharField('商家类型',max_length = 2,choices = SHOPTYPE_CHOICES,default = '0')
     desc = models.CharField('描述',max_length = 200,default='0')
     isServiceOn = models.BooleanField('是否在线服务',default = False)
-    startTimeStamp = models.PositiveSmallIntegerField('开始时间戳',max_length=10,default=0)
-    endTimeStamp = models.PositiveSmallIntegerField('结束时间戳',max_length=10,default=0)
-    star = models.PositiveSmallIntegerField('评价',default=5)
+    startTimeStamp = models.PositiveIntegerField('开始时间戳',max_length=10,default=0)
+    endTimeStamp = models.PositiveIntegerField('结束时间戳',max_length=10,default=0)
+    star = models.PositiveIntegerField('评价',default=5)
     province = models.CharField('省份',max_length = 20,default='')
     city = models.CharField('城市',max_length = 20,default='')
     district = models.CharField('地区',max_length = 20,default='')
     addressDetail = models.CharField('详细信息',max_length = 100,default='')
-    clientID = models.CharField(max_length = 40, default ='000')
+    clientID = models.CharField(max_length = 100, default ='000')
     deviceToken = models.CharField(max_length=64,default = '0')
     deviceInfo = models.CharField('设备名称（iOS、Android）',max_length = 20, default='')
     lastLoginTime = models.CharField('上次登录时间',max_length = 13, default = '0')
@@ -74,9 +74,10 @@ class Shop(models.Model):
         verbose_name_plural = '商家列表'
 
 CATEGORY_TYPE_CHOICES=(
-    (u'0',u'热菜'),
-    (u'1',u'凉菜'),
-    (u'2',u'饮品'),
+    (u'0',u'热菜'),   #配菜+前打荷+后打荷+上菜
+    (u'1',u'热菜无前打荷'),   #配菜+后打荷+上菜
+    (u'2',u'凉菜'),   #配菜+上菜
+    (u'3',u'饮品'),   #上菜
 )
 
 class Category(models.Model):
@@ -99,7 +100,7 @@ class Waiter(models.Model):
     name = models.CharField('店员名',max_length = 50)
     headImage = models.CharField('店员头像',max_length = 100)
     status = models.CharField('状态',max_length=1,choices=SHOPPER_STATUS_CHOICES,default='0')
-    clientID = models.CharField(max_length = 40)
+    clientID = models.CharField(max_length = 100)
     lastLoginTime = models.CharField('上次登录时间',max_length = 13, default = '0')
     deviceToken = models.CharField('iOS设备号',max_length=64,default = '0')
     deviceInfo = models.CharField('设备名称（iOS、Android）',max_length = 20, default='none')
@@ -114,7 +115,7 @@ class OrderSeparate(models.Model):
     name = models.CharField('店员名',max_length = 50)
     headImage = models.CharField('店员头像',max_length = 100)
     status = models.CharField('状态',max_length=1,choices=SHOPPER_STATUS_CHOICES,default='0')
-    clientID = models.CharField(max_length = 40)
+    clientID = models.CharField(max_length = 100)
     lastLoginTime = models.CharField('上次登录时间',max_length = 13, default = '0')
     deviceToken = models.CharField('iOS设备号',max_length=64,default = '0')
     deviceInfo = models.CharField('设备名称（iOS、Android）',max_length = 20, default='none')
@@ -129,7 +130,7 @@ class BeforeCook(models.Model):
     name = models.CharField('店员名',max_length = 50)
     headImage = models.CharField('店员头像',max_length = 100)
     status = models.CharField('状态',max_length=1,choices=SHOPPER_STATUS_CHOICES,default='0')
-    clientID = models.CharField(max_length = 40)
+    clientID = models.CharField(max_length = 100)
     lastLoginTime = models.CharField('上次登录时间',max_length = 13, default = '0')
     deviceToken = models.CharField('iOS设备号',max_length=64,default = '0')
     deviceInfo = models.CharField('设备名称（iOS、Android）',max_length = 20, default='none')
@@ -145,7 +146,7 @@ class AfterCook(models.Model):
     name = models.CharField('店员名',max_length = 50)
     headImage = models.CharField('店员头像',max_length = 100)
     status = models.CharField('状态',max_length=1,choices=SHOPPER_STATUS_CHOICES,default='0')
-    clientID = models.CharField(max_length = 40)
+    clientID = models.CharField(max_length = 100)
     lastLoginTime = models.CharField('上次登录时间',max_length = 13, default = '0')
     deviceToken = models.CharField('iOS设备号',max_length=64,default = '0')
     deviceInfo = models.CharField('设备名称（iOS、Android）',max_length = 20, default='none')
@@ -161,7 +162,7 @@ class Cook(models.Model):
     name = models.CharField('店员名',max_length = 50)
     headImage = models.CharField('店员头像',max_length = 100)
     status = models.CharField('状态',max_length=1,choices=SHOPPER_STATUS_CHOICES,default='0')
-    clientID = models.CharField(max_length = 40)
+    clientID = models.CharField(max_length = 100)
     lastLoginTime = models.CharField('上次登录时间',max_length = 13, default = '0')
     deviceToken = models.CharField('iOS设备号',max_length=64,default = '0')
     deviceInfo = models.CharField('设备名称（iOS、Android）',max_length = 20, default='none')
@@ -175,7 +176,7 @@ class Serve(models.Model):
     name = models.CharField('店员名',max_length = 50)
     headImage = models.CharField('店员头像',max_length = 100)
     status = models.CharField('状态',max_length=1,choices=SHOPPER_STATUS_CHOICES,default='0')
-    clientID = models.CharField(max_length = 40)
+    clientID = models.CharField(max_length = 100)
     lastLoginTime = models.CharField('上次登录时间',max_length = 13, default = '0')
     deviceToken = models.CharField('iOS设备号',max_length=64,default = '0')
     deviceInfo = models.CharField('设备名称（iOS、Android）',max_length = 20, default='none')

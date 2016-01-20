@@ -44,7 +44,7 @@ def beforeCookGetCurrentOrderSkuList(request):
         response['errorMsg'] = '请先与店铺管理者绑定'
         return HttpResponse(json.dumps(response),content_type="application/json")
 
-    orderSkuQuery = OrderSku.objects.filter(status='4').filter(beforeCookId = str(beforeCook.id))
+    orderSkuQuery = OrderSku.objects.filter(status='4').filter(beforeCookId = str(beforeCook.id)).order_by('id')
     if not orderSkuQuery.exists():
         response['code'] = 0
         return HttpResponse(json.dumps(response),content_type="application/json")

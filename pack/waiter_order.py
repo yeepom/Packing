@@ -8,7 +8,7 @@ import logging
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from pack.pack_push_2_user import pushAPNToUser,pushMessageToSingle
-from pack.tasks import waiterPushMessage
+from pack.tasks import waiterPushMessage,waiterPushMessageWithCalcelOrderSkus,waiterPushMessageWithAddSkus
 import pytz
 
 reload(sys)
@@ -126,12 +126,12 @@ def submitOrder(request):
         order.save()
         table.status = '3'
         table.save()
-        submitRecord = u'点菜成功，订单号为：'.encode('utf-8')
-        submitRecord = submitRecord + str(order.id)
-        submitRecord = submitRecord + u'，桌号为：'.encode('utf-8')
-        submitRecord = submitRecord + str(table.number)
-        record = OrderRecord(record = submitRecord,order=order,date = datetime.datetime.now())
-        record.save()
+        # submitRecord = u'点菜成功，订单号为：'.encode('utf-8')
+        # submitRecord = submitRecord + str(order.id)
+        # submitRecord = submitRecord + u'，桌号为：'.encode('utf-8')
+        # submitRecord = submitRecord + str(table.number)
+        # record = OrderRecord(record = submitRecord,order=order,date = datetime.datetime.now())
+        # record.save()
 
         _orderSkuList = []
         for index in range(len(_categoryIdList)):
@@ -176,7 +176,7 @@ def submitOrder(request):
         response_data['waiterInfo'] = _waiter_Info
 
         _skuList = []
-        orderSkuQuery = order.ordersku_set.all().order_by('-id')
+        orderSkuQuery = order.ordersku_set.all().order_by('id')
         for orderSku in orderSkuQuery:
             _sku = {}
             _sku['orderSkuId'] = orderSku.id
@@ -299,9 +299,9 @@ def addSkusWithOrder(request):
         priceTotal = float(order.priceTotal) + float(_priceTotal)
         order.priceTotal = priceTotal
         order.save()
-        submitRecord = u'加菜成功'.encode('utf-8')
-        record = OrderRecord(record = submitRecord,order=order,date = datetime.datetime.now())
-        record.save()
+        # submitRecord = u'加菜成功'.encode('utf-8')
+        # record = OrderRecord(record = submitRecord,order=order,date = datetime.datetime.now())
+        # record.save()
 
         _orderSkuList = []
         for index in range(len(_categoryIdList)):
@@ -319,7 +319,7 @@ def addSkusWithOrder(request):
                                           skuName=str(skuName), skuQuantity=int(skuQuantity), skuSizeName = str(skuSize),
                                           skuPrice = float(skuPrice),status = '0'))
         OrderSku.objects.bulk_create(_orderSkuList)
-        waiterPushMessage.delay(str(order.id))
+        waiterPushMessageWithAddSkus.delay(str(order.id))
 
         try:
             table = Table.objects.select_related().get(id = str(order.tableId))
@@ -351,7 +351,7 @@ def addSkusWithOrder(request):
         response_data['waiterInfo'] = _waiter_Info
 
         _skuList = []
-        orderSkuQuery = order.ordersku_set.all().order_by('-id')
+        orderSkuQuery = order.ordersku_set.all().order_by('id')
         for orderSku in orderSkuQuery:
             _sku = {}
             _sku['orderSkuId'] = orderSku.id
@@ -411,12 +411,12 @@ def waiterCancelOrderSku(request):
         return HttpResponse(json.dumps(response),content_type="application/json")
     _orderSkuId = str(_orderSkuId)
     logger.info(_orderSkuId)
-    orderSkuQuery = OrderSku.objects.filter(orderSkuId = _orderSkuId)
-    if orderSkuQuery[0].status == '6':
-        response['code'] = -1
-        response['errorMsg'] = '厨师正在做菜，无法取消'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    elif orderSkuQuery[0].status == '8':
+    orderSkuQuery = OrderSku.objects.filter(id = _orderSkuId)
+    # if orderSkuQuery[0].status == '6':
+    #     response['code'] = -1
+    #     response['errorMsg'] = '厨师正在做菜，无法取消'
+    #     return HttpResponse(json.dumps(response),content_type="application/json")
+    if orderSkuQuery[0].status == '8':
         response['code'] = -1
         response['errorMsg'] = '上菜员正在上菜，无法取消'
         return HttpResponse(json.dumps(response),content_type="application/json")
@@ -454,7 +454,7 @@ def waiterCancelOrderSku(request):
         _sku['skuQuantity'] = float(orderSku.skuQuantity)
         _sku['skuStatus'] = orderSku.status
         response_data['orderSkuInfo'] = _sku
-
+        waiterPushMessageWithCalcelOrderSkus.delay(str(order.id))
         response['code'] = 0
         response['data'] = response_data
         return HttpResponse(json.dumps(response),content_type="application/json")
@@ -698,7 +698,7 @@ def waiterGetShopOrderDetail(request):
         _userInfo['userTelephone'] = user.telephone
         _order['userInfo'] = _userInfo
     _skuList = []
-    orderSkuQuery = OrderSku.objects.filter(order__id = order.id)
+    orderSkuQuery = OrderSku.objects.filter(order__id = order.id).order_by('id')
     for orderSku in orderSkuQuery:
         _sku = {}
         _sku['orderSkuId'] = orderSku.id

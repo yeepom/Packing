@@ -45,7 +45,7 @@ def afterCookGetCurrentOrderSkuList(request):
         response['errorMsg'] = '请先与店铺管理者绑定'
         return HttpResponse(json.dumps(response),content_type="application/json")
 
-    orderSkuQuery = OrderSku.objects.filter(status='6').filter(afterCookId = str(afterCook.id))
+    orderSkuQuery = OrderSku.objects.filter(status='6').filter(afterCookId = str(afterCook.id)).order_by('id')
     if not orderSkuQuery.exists():
         response['code'] = 0
         return HttpResponse(json.dumps(response),content_type="application/json")
@@ -106,7 +106,6 @@ def afterCookFinishOrderSkuList(request):
         response['errorMsg'] = '请输入订单id'
         return HttpResponse(json.dumps(response),content_type="application/json")
 
-    afterCookPushMessage.delay(_orderSkuList)
 
     for _orderSkuId in _orderSkuList:
         _orderSkuId = str(_orderSkuId)
@@ -124,5 +123,6 @@ def afterCookFinishOrderSkuList(request):
             response['code'] = -1
             response['errorMsg'] = 'orderSku状态错误'
             return HttpResponse(json.dumps(response),content_type="application/json")
+    afterCookPushMessage.delay(_orderSkuList)
     response['code'] = 0
     return HttpResponse(json.dumps(response),content_type="application/json")

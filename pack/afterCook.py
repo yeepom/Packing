@@ -416,3 +416,47 @@ def afterCookUpdateClientID(request):
     response['data'] = {'clientID':_clientID}
     response['errorMsg'] = ''
     return HttpResponse(json.dumps(response),content_type="application/json")
+
+
+@csrf_exempt
+def afterCookUpdateDeviceToken(request):
+    response = {}
+    response['data'] = {}
+    response['errorMsg'] = ""
+    _afterCookId = request.session.get('afterCookId')
+    if not _afterCookId:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    ##################JUDGE############
+    _lastLoginTime = request.session.get('lastLoginTime')
+    if not _lastLoginTime:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    try:
+        afterCook = AfterCook.objects.get(id = _afterCookId)
+    except ObjectDoesNotExist:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+    if _lastLoginTime != afterCook.lastLoginTime:
+        response['code'] = 1
+        response['errorMsg'] = '上次登录失效，请重新登录'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    ####################END#################
+
+
+    _deviceToken = request.REQUEST.get('deviceToken')
+    if _deviceToken == None or _deviceToken == '':
+        response['code'] = -1
+        response['errorMsg'] = '请上传deviceToken'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+
+    if afterCook.deviceToken != _deviceToken:
+        afterCook.deviceToken = _deviceToken
+        afterCook.save()
+    response['code'] = 0
+    response['data'] = {'deviceToken':_deviceToken}
+    response['errorMsg'] = ''
+    return HttpResponse(json.dumps(response),content_type="application/json")

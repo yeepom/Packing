@@ -171,15 +171,28 @@ urlpatterns = patterns('',
     url(r'^alterServeName$','pack.serve.alterServeName'),
     url(r'^alterServeHeadImage$','pack.serve.alterServeHeadImage'),
     url(r'^serveFeedback$','pack.serve.serveFeedback'),
+    url(r'^serveUpdateClientID$','pack.serve.serveUpdateClientID'),
 
     url(r'^serveGetCurrentOrderSkuList$','pack.serve_order.serveGetCurrentOrderSkuList'),
     url(r'^serveFinishOrderSkuList$','pack.serve_order.serveFinishOrderSkuList'),
 
-    url(r'^testPush$','pack.orderSeparate_order.testPush'),
 
-    url(r'^','pack.webViews.index'),
+    url(r'^shopUpdateDeviceToken$','pack.shop.shopUpdateDeviceToken'),
+    url(r'^waiterUpdateDeviceToken$','pack.waiter.waiterUpdateDeviceToken'),
+    url(r'^orderSeparateUpdateDeviceToken$','pack.orderSeparate.orderSeparateUpdateDeviceToken'),
+    url(r'^beforeCookUpdateDeviceToken$','pack.beforeCook.beforeCookUpdateDeviceToken'),
+    url(r'^afterCookUpdateDeviceToken$','pack.afterCook.afterCookUpdateDeviceToken'),
+    url(r'^serveUpdateDeviceToken$','pack.serve.serveUpdateDeviceToken'),
+
+
+    url(r'^testPush$','pack.orderSeparate_order.testPush'),
+    url(r'^testPushIOS$','pack.orderSeparate_order.testPushIOS'),
+    url(r'^testPushViaClientID$','pack.orderSeparate_order.testPushViaClientID'),
+
     url(r'^shopProtocol$','pack.webViews.shopProtocol'),
     url(r'^userProtocol$','pack.webViews.userProtocol'),
+    url(r'^$','pack.webViews.index'),
+
     ( r'^js/(?P<path>.*)$', 'django.views.static.serve',
             { 'document_root': settings.STATIC_URL+'js/'}
     ),

@@ -47,7 +47,7 @@ def orderSeparateGetCurrentOrderSkuList(request):
         response['errorMsg'] = '请先与店铺管理者绑定'
         return HttpResponse(json.dumps(response),content_type="application/json")
 
-    orderSkuQuery = OrderSku.objects.filter(status='2').filter(orderSeparateId = str(orderSeparate.id))
+    orderSkuQuery = OrderSku.objects.filter(status='2').filter(orderSeparateId = str(orderSeparate.id)).order_by('id')
     if not orderSkuQuery.exists():
         response['code'] = 0
         return HttpResponse(json.dumps(response),content_type="application/json")
@@ -71,8 +71,19 @@ def orderSeparateGetCurrentOrderSkuList(request):
 
 @csrf_exempt
 def testPush(request):
-    pushRst = pushMessageToSingle("bc8b02456bb6cc48842e2684e1fc8687",'{"method":"pushToServe"}')
+    pushRst = pushMessageToSingle("bc8b02456bb6cc48842e2684e1fc8687",'{"method":"pushNewOrdersToSaler"}')
     print pushRst
+    return HttpResponse(pushRst)
+
+@csrf_exempt
+def testPushIOS(request):
+    pushRst = pushAPNToShop("c08cf207be534650bfd07f983eee067cf1931b1df5f17374bfa4b48158bc52e8",'0','{"method":"pushNewOrdersToSaler"}')
+    return HttpResponse(pushRst)
+
+@csrf_exempt
+def testPushViaClientID(request):
+    pushRst = pushMessageToSingle("dcd7b53c18bc756642d883f192ffc063",'{"method":"pushNewOrdersToSaler"}')
+    return HttpResponse(pushRst)
 
 @csrf_exempt
 def orderSeparateFinishOrderSkuList(request):
@@ -119,8 +130,14 @@ def orderSeparateFinishOrderSkuList(request):
             response['errorMsg'] = '查询orderSku失败'
             return HttpResponse(json.dumps(response),content_type="application/json")
 
-        if orderSku.status == '2' and orderSku.orderSeparateId == str(orderSeparate.id):
+        if orderSku.status == '2' and orderSku.categoryType =='0' and orderSku.orderSeparateId == str(orderSeparate.id):
             orderSku.status = '4'
+            orderSku.save()
+        elif orderSku.status == '2' and orderSku.categoryType =='1' and orderSku.orderSeparateId == str(orderSeparate.id):
+            orderSku.status = '6'
+            orderSku.save()
+        elif orderSku.status == '2' and orderSku.categoryType =='2' and orderSku.orderSeparateId == str(orderSeparate.id):
+            orderSku.status = '8'
             orderSku.save()
         else:
             response['code'] = -1

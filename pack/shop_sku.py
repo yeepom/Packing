@@ -43,7 +43,7 @@ def getCategories(request):
     for category in categories:
         response_category={}
         response_category['categoryName'] = category.categoryName
-        response_category['categoryId'] = str(str(category.id))
+        response_category['categoryId'] = str(category.id)
         response_category['categoryType'] = category.categoryType
         response_category['orderSeparateListCount'] = category.orderseparate_set.count()
         response_category['beforeCookListCount'] = category.beforecook_set.count()
@@ -174,7 +174,67 @@ def addCategory(request):
         response_category['afterCookListCount'] = category.aftercook_set.count()
         response['data'] = response_category
         return HttpResponse(json.dumps(response),content_type="application/json")
+    ##类别1：配单+后打荷+上菜员
     elif _categoryType == '1':
+        _orderSeparateList = request.REQUEST.getlist('orderSeparateList[]')
+        _afterCookList = request.REQUEST.getlist('afterCookList[]')
+        if _orderSeparateList == []:
+            response['code'] = -1
+            response['errorMsg'] = '获取配菜员列表失败'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        if _afterCookList == []:
+            response['code'] = -1
+            response['errorMsg'] = '获取后打荷列表失败'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        category = Category(categoryName = _categoryName,shop = shop,categoryType = _categoryType)
+        try:
+            category.save()
+        except Exception,e:
+            print('e')
+            response['code'] = -1
+            response['errorMsg'] = '保存类别失败'
+            return HttpResponse(json.dumps(response),content_type="application/json")
+        for _orderSeparateId in _orderSeparateList:
+            _orderSeparateId = str(_orderSeparateId)
+            try:
+                orderSeparate = OrderSeparate.objects.get(id = _orderSeparateId)
+            except ObjectDoesNotExist:
+                response['code'] = -1
+                response['errorMsg'] = '获取配菜员失败'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if orderSeparate.category != None:
+                response['code'] = -1
+                response['errorMsg'] = '有配菜员已经关联其他类别'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+
+            orderSeparate.category = category
+            orderSeparate.save()
+        for _afterCookId in _afterCookList:
+            _afterCookId = str(_afterCookId)
+            try:
+                afterCook = AfterCook.objects.get(id = _afterCookId)
+            except ObjectDoesNotExist:
+                response['code'] = -1
+                response['errorMsg'] = '获取后打荷失败'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if afterCook.category != None:
+                response['code'] = -1
+                response['errorMsg'] = '有后打荷已经关联其他类别'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            afterCook.category = category
+            afterCook.save()
+
+        response['code'] = 0
+        response_category = {}
+        response_category['categoryName'] = category.categoryName
+        response_category['categoryId'] = str(category.id)
+        response_category['categoryType'] = category.categoryType
+        response_category['orderSeparateListCount'] = category.orderseparate_set.count()
+        response_category['beforeCookListCount'] = category.beforecook_set.count()
+        response_category['afterCookListCount'] = category.aftercook_set.count()
+        response['data'] = response_category
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    elif _categoryType == '2':
             ##类别1：配单+上菜员
         _orderSeparateList = request.REQUEST.getlist('orderSeparateList[]')
         if _orderSeparateList == []:
@@ -213,7 +273,7 @@ def addCategory(request):
         response_category['orderSeparateListCount'] = category.orderseparate_set.count()
         response['data'] = response_category
         return HttpResponse(json.dumps(response),content_type="application/json")
-    elif _categoryType == '2':
+    elif _categoryType == '3':
         ##类别2：上菜员
         category = Category(categoryName = _categoryName,shop = shop,categoryType = _categoryType)
         try:

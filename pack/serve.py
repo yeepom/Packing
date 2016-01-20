@@ -61,7 +61,7 @@ def serveAddInfo(request):
     serve.everSetInfo = True
     serve.save()
     response['code'] = 0
-    response['data'] = {'type':'2','cookId':str(serve.id)}
+    response['data'] = {'type':'2','serveId':str(serve.id)}
     return HttpResponse(json.dumps(response),content_type="application/json")
 
 @csrf_exempt
@@ -429,5 +429,48 @@ def serveUpdateClientID(request):
         serve.save()
     response['code'] = 0
     response['data'] = {'clientID':_clientID}
+    response['errorMsg'] = ''
+    return HttpResponse(json.dumps(response),content_type="application/json")
+
+@csrf_exempt
+def serveUpdateDeviceToken(request):
+    response = {}
+    response['data'] = {}
+    response['errorMsg'] = ""
+    _serveId = request.session.get('serveId')
+    if not _serveId:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    ##################JUDGE############
+    _lastLoginTime = request.session.get('lastLoginTime')
+    if not _lastLoginTime:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    try:
+        serve = Serve.objects.get(id = _serveId)
+    except ObjectDoesNotExist:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+    if _lastLoginTime != serve.lastLoginTime:
+        response['code'] = 1
+        response['errorMsg'] = '上次登录失效，请重新登录'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    ####################END#################
+
+
+    _deviceToken = request.REQUEST.get('deviceToken')
+    if _deviceToken == None or _deviceToken == '':
+        response['code'] = -1
+        response['errorMsg'] = '请上传deviceToken'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+
+    if serve.deviceToken != _deviceToken:
+        serve.deviceToken = _deviceToken
+        serve.save()
+    response['code'] = 0
+    response['data'] = {'deviceToken':_deviceToken}
     response['errorMsg'] = ''
     return HttpResponse(json.dumps(response),content_type="application/json")

@@ -81,9 +81,9 @@ def getMemberList(request):
         _afterCookList.append(_afterCook)
     response_data['afterCookList'] = _afterCookList
 
-    serveList = shop.serve_set.all().order_by('-id')
+    serveQuery = Serve.objects.filter(shopId = str(_shopId)).order_by('-id')
     _serveList = []
-    for serve in serveList:
+    for serve in serveQuery:
         _serve = {}
         _serve['serveId'] = str(serve.id)
         _serve['serveName'] = serve.name

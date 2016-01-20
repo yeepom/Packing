@@ -132,25 +132,25 @@ def shopVerifyTelephone(request):
             currentTime = time.time()
             currentTime = int(currentTime)
             currentTime = str(currentTime)
-            new_shop = Waiter(telephone=str(_telephone),name = _name, headImage = _headImage,lastLoginTime =
+            new_waiter = Waiter(telephone=str(_telephone),name = _name, headImage = _headImage,lastLoginTime =
             currentTime,deviceToken = _deviceToken,clientID = _clientID,deviceInfo = _deviceInfo)
-            new_shop.save()
+            new_waiter.save()
             response['code'] = 0
-            response_data = {'type':'1','shopId':str(new_shop.id),'everSetInfo':'0'}
-            request.session['shopId'] = new_shop.id   #new_shop.save()之后，才能在session中设置shopid，未保存之前不知道是多少
+            response_data = {'type':'1','waiterId':str(new_waiter.id),'everSetInfo':'0'}
+            request.session['waiterId'] = new_waiter.id   #new_shop.save()之后，才能在session中设置shopid，未保存之前不知道是多少
             request.session['lastLoginTime'] = currentTime
             response['data'] = response_data
             return HttpResponse(json.dumps(response),content_type="application/json")
 
         response_data = {}
-        response_data['shopId'] = str(query_telephone[0].id)
+        response_data['waiterId'] = str(query_telephone[0].id)
         response_data['type'] = '1'
         response_data['everSetInfo'] = '1' if query_telephone[0].everSetInfo == True else '0'
         currentTime = time.time()*1000
         currentTime = int(currentTime)
         currentTime = str(currentTime)
         query_telephone.update(clientID = _clientID, deviceToken = _deviceToken,deviceInfo = _deviceInfo,lastLoginTime = currentTime)
-        request.session['shopId'] = query_telephone[0].id
+        request.session['waiterId'] = query_telephone[0].id
         request.session['lastLoginTime'] = currentTime
         response['code'] = 0
         response['data'] = response_data
@@ -223,38 +223,6 @@ def shopVerifyTelephone(request):
         return HttpResponse(json.dumps(response),content_type="application/json")
 
 
-    # elif _method == '4':
-    #     query_telephone = Cook.objects.filter(telephone = str(_telephone))
-    #     if not query_telephone.exists():
-    #         _name = '****'+_telephone[7:11]
-    #         _headImage = 'http://meiyue.b0.upaiyun.com/head/1_head.jpg'
-    #         currentTime = time.time()
-    #         currentTime = int(currentTime)
-    #         currentTime = str(currentTime)
-    #         new_cook = Cook(telephone=str(_telephone),name = _name, headImage = _headImage,lastLoginTime =
-    #         currentTime,deviceToken = _deviceToken,clientID = _clientID,deviceInfo = _deviceInfo)
-    #         new_cook.save()
-    #         response['code'] = 0
-    #         response_data = {'type':'4','cookId':str(new_cook.id),'everSetInfo':'0'}
-    #         request.session['cookId'] = str(new_cook.id)   #new_shop.save()之后，才能在session中设置shopid，未保存之前不知道是多少
-    #         request.session['lastLoginTime'] = currentTime
-    #         response['data'] = response_data
-    #         return HttpResponse(json.dumps(response),content_type="application/json")
-    #
-    #     response_data = {}
-    #     response_data['cookId'] = str(query_telephone[0].id)
-    #     response_data['type'] = '4'
-    #     response_data['everSetInfo'] = '1' if query_telephone[0].everSetInfo == True else '0'
-    #     currentTime = time.time()*1000
-    #     currentTime = int(currentTime)
-    #     currentTime = str(currentTime)
-    #     query_telephone.update(clientID = _clientID, deviceToken = _deviceToken,deviceInfo = _deviceInfo,lastLoginTime = currentTime)
-    #     request.session['cookId'] = query_telephone[0].id
-    #     request.session['lastLoginTime'] = currentTime
-    #     response['code'] = 0
-    #     response['data'] = response_data
-    #     return HttpResponse(json.dumps(response),content_type="application/json")
-
     elif _method == '4':
         query_telephone = AfterCook.objects.filter(telephone = str(_telephone))
         if not query_telephone.exists():
@@ -267,7 +235,7 @@ def shopVerifyTelephone(request):
                 lastLoginTime =currentTime,deviceToken = _deviceToken,clientID = _clientID,deviceInfo = _deviceInfo)
             new_afterCook.save()
             response['code'] = 0
-            response_data = {'type':'5','afterCookId':str(new_afterCook.id),'everSetInfo':'0'}
+            response_data = {'type':'4','afterCookId':str(new_afterCook.id),'everSetInfo':'0'}
             request.session['afterCookId'] = new_afterCook.id   #new_shop.save()之后，才能在session中设置shopid，未保存之前不知道是多少
             request.session['lastLoginTime'] = currentTime
             response['data'] = response_data
@@ -275,7 +243,7 @@ def shopVerifyTelephone(request):
 
         response_data = {}
         response_data['afterCookId'] = str(query_telephone[0].id)
-        response_data['type'] = '5'
+        response_data['type'] = '4'
         response_data['everSetInfo'] = '1' if query_telephone[0].everSetInfo == True else '0'
         currentTime = time.time()*1000
         currentTime = int(currentTime)
@@ -300,7 +268,7 @@ def shopVerifyTelephone(request):
             currentTime,deviceToken = _deviceToken,clientID = _clientID,deviceInfo = _deviceInfo)
             new_serve.save()
             response['code'] = 0
-            response_data = {'type':'6','serveId':str(new_serve.id),'everSetInfo':'0'}
+            response_data = {'type':'5','serveId':str(new_serve.id),'everSetInfo':'0'}
             request.session['serveId'] = new_serve.id   #new_shop.save()之后，才能在session中设置shopid，未保存之前不知道是多少
             request.session['lastLoginTime'] = currentTime
             response['data'] = response_data
@@ -308,7 +276,7 @@ def shopVerifyTelephone(request):
 
         response_data = {}
         response_data['serveId'] = str(query_telephone[0].id)
-        response_data['type'] = '6'
+        response_data['type'] = '5'
         response_data['everSetInfo'] = '1' if query_telephone[0].everSetInfo == True else '0'
         currentTime = time.time()*1000
         currentTime = int(currentTime)
@@ -999,5 +967,48 @@ def shopUpdateClientID(request):
         shop.save()
     response['code'] = 0
     response['data'] = {'clientID':_clientID}
+    response['errorMsg'] = ''
+    return HttpResponse(json.dumps(response),content_type="application/json")
+
+@csrf_exempt
+def shopUpdateDeviceToken(request):
+    response = {}
+    response['data'] = {}
+    response['errorMsg'] = ""
+    _shopId = request.session.get('shopId')
+    if not _shopId:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    ##################JUDGE############
+    _lastLoginTime = request.session.get('lastLoginTime')
+    if not _lastLoginTime:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    try:
+        shop = Shop.objects.get(id = _shopId)
+    except ObjectDoesNotExist:
+        response['code'] = 1
+        response['errorMsg'] = '请先登录'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+    if _lastLoginTime != shop.lastLoginTime:
+        response['code'] = 1
+        response['errorMsg'] = '上次登录失效，请重新登录'
+        return HttpResponse(json.dumps(response),content_type="application/json")
+    ####################END#################
+
+
+    _deviceToken = request.REQUEST.get('deviceToken')
+    if _deviceToken == None or _deviceToken == '':
+        response['code'] = -1
+        response['errorMsg'] = '请上传deviceToken'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+
+    if shop.deviceToken != _deviceToken:
+        shop.deviceToken = _deviceToken
+        shop.save()
+    response['code'] = 0
+    response['data'] = {'deviceToken':_deviceToken}
     response['errorMsg'] = ''
     return HttpResponse(json.dumps(response),content_type="application/json")

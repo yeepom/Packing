@@ -48,14 +48,14 @@ def waiterGetShopSkus(request):
     response_categories = []
     for category in categoryQuery:
         response_category = {}
-        response_category['categoryId'] = category.id
+        response_category['categoryId'] = str(category.id)
         response_category['categoryName'] = category.categoryName
         response_category['categoryType'] = category.categoryType
         skus = category.sku_set.filter(isValid=True).order_by('id')
         response_category_skus = []
         for sku in skus:
             response_category_sku = {}
-            response_category_sku['skuId'] = sku.id
+            response_category_sku['skuId'] = str(sku.id)
             response_category_sku['skuName'] = sku.name.encode('utf-8')
             response_category_sku['skuDesc'] = sku.desc.encode('utf-8')
             _img = sku.img.split(',')
