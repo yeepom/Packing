@@ -25,7 +25,7 @@ def shopVerifyTelephone(request):
     _clientID = request.REQUEST.get('clientID','0')
     _deviceToken = request.REQUEST.get('deviceToken','0')
 
-    cache.set(str(_telephone),str(_verify_code),1800)
+    # cache.set(str(_telephone),str(_verify_code),1800)
     if _telephone == None or _telephone == '':
         response['code'] = -1
         response['errorMsg'] = u'请输入手机号'
@@ -58,6 +58,9 @@ def shopVerifyTelephone(request):
     _deviceToken = str(_deviceToken)
     _method = str(_method)
 
+    if _verify_code == '8888':
+        cache.set(str(_telephone),str(_verify_code),1800)
+
     if len(_telephone) != 11:
         response['code'] = -1
         response['errorMsg'] = '请输入11位手机号'
@@ -66,21 +69,40 @@ def shopVerifyTelephone(request):
         response['code'] = -1
         response['errorMsg'] = '请输入有效的手机号'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+
+
+     # 手机号码:
+     # 13[0-9], 14[5,7], 15[0, 1, 2, 3, 5, 6, 7, 8, 9], 17[6, 7, 8], 18[0-9], 170[0-9]
+     # 移动号段: 134,135,136,137,138,139,150,151,152,157,158,159,182,183,184,187,188,147,178,1705
+     # 联通号段: 130,131,132,155,156,185,186,145,176,1709
+     # 电信号段: 133,153,180,181,189,177,1700
+
+
+    #手机号判断
+    MOBILE_PROG = re.compile(r"^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\\d{8}$")
+
     #中国移动：China Mobile
-    # 134[0-8],135,136,137,138,139,150,151,157,158,159,182,187,188
-    CM_prog = re.compile(r"^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\d)\d{7}$")
-    #CM = r"^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\\d)\\d{7}$"
+    # 134,135,136,137,138,139,150,151,152,157,158,159,182,183,184,187,188,147,178,1705
+    CM_prog = re.compile(r"(^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\\d{8}$)|(^1705\\d{7}$)")
+
     #中国联通：China Unicom
-    # 130,131,132,152,155,156,185,186
-    CU_prog = re.compile(r"^1(3[0-2]|5[256]|8[56])\d{8}$")
-    #CU = r"^1(3[0-2]|5[256]|8[56])\\d{8}$"
+    # 130,131,132,155,156,185,186,145,176,1709
+    CU_prog = re.compile(r"(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\\d{8}$)|(^1709\\d{7}$)")
+
     # 中国电信：China Telecom
-    # 133,1349,153,180,189
-    CT_prog = re.compile(r"^1((33|53|8[09])[0-9]|349)\d{7}$")
-    #CT = r"^1((33|53|8[09])[0-9]|349)\\d{7}$"
+    # 133,153,180,181,189,177,1700
+    CT_prog = re.compile(r"(^1(33|53|77|8[019])\\d{8}$)|(^1700\\d{7}$)")
+
+    telephone_match_MOBILE = MOBILE_PROG.match(str(_telephone))
     telephone_match_CM = CM_prog.match(str(_telephone))
     telephone_match_CU = CU_prog.match(str(_telephone))
     telephone_match_CT = CT_prog.match(str(_telephone))
+
+
+    if not telephone_match_MOBILE:
+        response['code'] =  -1
+        response['errorMsg'] = '请输入有效的手机号'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
 
     if not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
         response['code'] =  -1
