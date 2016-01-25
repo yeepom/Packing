@@ -79,19 +79,19 @@ def shopVerifyTelephone(request):
 
 
     #手机号判断
-    MOBILE_PROG = re.compile(r"^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\\d{8}$")
+    MOBILE_PROG = re.compile(r"^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\d{8}$")
 
     #中国移动：China Mobile
     # 134,135,136,137,138,139,150,151,152,157,158,159,182,183,184,187,188,147,178,1705
-    CM_prog = re.compile(r"(^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\\d{8}$)|(^1705\\d{7}$)")
+    CM_prog = re.compile(r"(^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\d{8}$)|(^1705\d{7}$)")
 
     #中国联通：China Unicom
     # 130,131,132,155,156,185,186,145,176,1709
-    CU_prog = re.compile(r"(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\\d{8}$)|(^1709\\d{7}$)")
+    CU_prog = re.compile(r"(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\d{8}$)|(^1709\d{7}$)")
 
     # 中国电信：China Telecom
     # 133,153,180,181,189,177,1700
-    CT_prog = re.compile(r"(^1(33|53|77|8[019])\\d{8}$)|(^1700\\d{7}$)")
+    CT_prog = re.compile(r"(^1(33|53|77|8[019])\d{8}$)|(^1700\d{7}$)")
 
     telephone_match_MOBILE = MOBILE_PROG.match(str(_telephone))
     telephone_match_CM = CM_prog.match(str(_telephone))
