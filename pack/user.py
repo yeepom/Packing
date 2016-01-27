@@ -155,25 +155,17 @@ def verifyTelephone(request):
         _deviceToken = str(_deviceToken)
     _deviceInfo = str(_deviceInfo)
 
-    #中国移动：China Mobile
-    # 134[0-8],135,136,137,138,139,150,151,157,158,159,182,187,188
-    CM_prog = re.compile(r"^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\d)\d{7}$")
-    #CM = r"^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\\d)\\d{7}$"
-    #中国联通：China Unicom
-    # 130,131,132,152,155,156,185,186
-    CU_prog = re.compile(r"^1(3[0-2]|5[256]|8[56])\d{8}$")
-    #CU = r"^1(3[0-2]|5[256]|8[56])\\d{8}$"
-    # 中国电信：China Telecom
-    # 133,1349,153,180,189
-    CT_prog = re.compile(r"^1((33|53|8[09])[0-9]|349)\d{7}$")
-    #CT = r"^1((33|53|8[09])[0-9]|349)\\d{7}$"
+    MOBILE_prog = re.compile(r"^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\d{8}$")
+    CM_prog = re.compile(r"(^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\d{8}$)|(^1705\d{7}$)")
+    CU_prog = re.compile(r"(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\d{8}$)|(^1709\d{7}$)")
+    CT_prog = re.compile(r"(^1(33|53|77|8[019])\d{8}$)|(^1700\d{7}$)")
+
+    telephone_match_MOBILE = MOBILE_prog.match(str(_telephone))
     telephone_match_CM = CM_prog.match(str(_telephone))
     telephone_match_CU = CU_prog.match(str(_telephone))
     telephone_match_CT = CT_prog.match(str(_telephone))
-    #print telephone_match_CM
-    #print telephone_match_CU
-    #print telephone_match_CT
-    if not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
+
+    if not telephone_match_MOBILE and not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
         response['code'] =  -1
         response['errorMsg'] = '请输入有效的手机号'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")

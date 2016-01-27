@@ -49,7 +49,7 @@ def waiterPushMessage(orderId):
             orderSku.save()
 
             payload = '{"method":"pushNewOrderSkusToOrderSeparate"}'
-            if(len(orderSeparate.deviceToken and "iOS") == 3):
+            if "iOS" in orderSeparate.deviceInfo:
                 pushAPNToShop(orderSeparate.deviceToken,'0',payload)
             else:
                 pushMessageToSingle(orderSeparate.clientID,payload)
@@ -72,7 +72,7 @@ def waiterPushMessage(orderId):
             orderSku.status = '8'
             orderSku.save()
             payload = '{"method":"pushNewOrderSkusToServe"}'
-            if(len(serve.deviceToken and "iOS") == 3):
+            if "iOS" in serve.deviceInfo:
                 pushAPNToShop(serve.deviceToken,'0',payload)
             else:
                 pushMessageToSingle(serve.clientID,payload)
@@ -82,7 +82,7 @@ def waiterPushMessage(orderId):
         logger.info('查找不到shop'+order.shopId)
         return
     payload = '{"method":"pushNewOrdersToSaler"}'
-    if(len(shop.deviceToken and "iOS") == 3):
+    if "iOS" in shop.deviceInfo:
         pushAPNToShop(shop.deviceToken,'0',payload)
     else:
         pushMessageToSingle(shop.clientID,payload)
@@ -121,7 +121,7 @@ def waiterPushMessageWithAddSkus(orderId):
             orderSku.save()
 
             payload = '{"method":"pushNewOrderSkusToOrderSeparate"}'
-            if(len(orderSeparate.deviceToken and "iOS") == 3):
+            if "iOS" in orderSeparate.deviceInfo:
                 pushAPNToShop(orderSeparate.deviceToken,'0',payload)
             else:
                 pushMessageToSingle(orderSeparate.clientID,payload)
@@ -144,7 +144,7 @@ def waiterPushMessageWithAddSkus(orderId):
             orderSku.status = '8'
             orderSku.save()
             payload = '{"method":"pushNewOrderSkusToServe"}'
-            if(len(serve.deviceToken and "iOS") == 3):
+            if "iOS" in serve.deviceInfo:
                 pushAPNToShop(serve.deviceToken,'0',payload)
             else:
                 pushMessageToSingle(serve.clientID,payload)
@@ -154,7 +154,7 @@ def waiterPushMessageWithAddSkus(orderId):
         logger.info('查找不到shop'+order.shopId)
         return
     payload = '{"method":"pushNewOrdersToSalerWithAddSkus"}'
-    if(len(shop.deviceToken and "iOS") == 3):
+    if "iOS" in shop.deviceInfo:
         pushAPNToShop(shop.deviceToken,'2',payload)
     else:
         pushMessageToSingle(shop.clientID,payload)
@@ -180,7 +180,7 @@ def waiterPushMessageWithCalcelOrderSkus(orderId):
         logger.info('查找不到shop'+order.shopId)
         return
     payload = '{"method":"pushNewOrdersToSalerWithCancelOrderSkus"}'
-    if(len(shop.deviceToken and "iOS") == 3):
+    if "iOS" in shop.deviceInfo:
         pushAPNToShop(shop.deviceToken,'4',payload)
     else:
         pushMessageToSingle(shop.clientID,payload)
@@ -213,7 +213,7 @@ def orderSeparatePushMessage(orderSkuIdList):
             orderSku.beforeCookName = beforeCook.name
             orderSku.save()
             payload = '{"method":"pushNewOrderSkusToBeforeCook"}'
-            if(len(beforeCook.deviceToken and "iOS") == 3):
+            if "iOS" in beforeCook.deviceInfo:
                 pushAPNToShop(beforeCook.deviceToken,'0',payload)
             else:
                 pushMessageToSingle(beforeCook.clientID,payload)
@@ -230,7 +230,7 @@ def orderSeparatePushMessage(orderSkuIdList):
             orderSku.afterCookName = afterCook.name
             orderSku.save()
             payload = '{"method":"pushNewOrderSkusToAfterCook"}'
-            if(len(afterCook.deviceToken and "iOS") == 3):
+            if "iOS" in afterCook.deviceInfo:
                 pushAPNToShop(afterCook.deviceToken,'0',payload)
             else:
                 pushMessageToSingle(afterCook.clientID,payload)
@@ -251,7 +251,7 @@ def orderSeparatePushMessage(orderSkuIdList):
             orderSku.serveName = serve.name
             orderSku.save()
             payload = '{"method":"pushNewOrderSkusToServe"}'
-            if(len(serve.deviceToken and "iOS") == 3):
+            if "iOS" in serve.deviceInfo:
                 pushAPNToShop(serve.deviceToken,'0',payload)
             else:
                 pushMessageToSingle(serve.clientID,payload)
@@ -289,7 +289,7 @@ def beforeCookPushMessage(orderSkuIdList):
             orderSku.afterCookName = afterCook.name
             orderSku.save()
             payload = '{"method":"pushNewOrderSkusToAfterCook"}'
-            if(len(afterCook.deviceToken and "iOS") == 3):
+            if "iOS" in afterCook.deviceInfo:
                 pushAPNToShop(afterCook.deviceToken,'0',payload)
             else:
                 pushMessageToSingle(afterCook.clientID,payload)
@@ -326,7 +326,7 @@ def afterCookPushMessage(orderSkuIdList):
             orderSku.serveName = serve.name
             orderSku.save()
             payload = '{"method":"pushNewOrderSkusToServe"}'
-            if(len(serve.deviceToken and "iOS") == 3):
+            if "iOS" in serve.deviceInfo:
                 pushAPNToShop(serve.deviceToken,'0',payload)
             else:
                 pushMessageToSingle(serve.clientID,payload)
@@ -351,7 +351,7 @@ def afterCookPushMessage(orderSkuIdList):
             logger.info("serveId")
             logger.info(orderSku.serveId)
             payload = '{"method":"pushNewOrderSkusToServe"}'
-            if(len(serve.deviceToken and "iOS") == 3):
+            if "iOS" in serve.deviceInfo:
                 pushAPNToShop(serve.deviceToken,'0',payload)
             else:
                 pushMessageToSingle(serve.clientID,payload)

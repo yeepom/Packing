@@ -234,9 +234,9 @@ def getShopDoingOrderList(request):
 
     _orderId = str(_orderId)
     if _orderId == '0':
-        orderQuery = Order.objects.filter(status = '0').order_by('id')
+        orderQuery = Order.objects.filter(status = '0').filter(shopId = str(shop.id)).order_by('id')
     else:
-        orderQuery = Order.objects.filter(status = '0').filter(id__lt = _orderId).order_by('id')
+        orderQuery = Order.objects.filter(status = '0').filter(shopId = str(shop.id)).filter(id__lt = _orderId).order_by('id')
     orders = orderQuery.reverse()[0:0+_limit]
     orderList = []
     for order in orders:

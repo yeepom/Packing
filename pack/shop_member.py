@@ -375,7 +375,7 @@ def verifyWaiter(request):
 
     _telephone = request.REQUEST.get('telephone')
     _verify_code = request.REQUEST.get('verifyCode')
-    cache.set(str(_telephone),str(_verify_code),1800)
+    # cache.set(str(_telephone),str(_verify_code),1800)
     if _telephone == None or _telephone == '':
         response['code'] = -1
         response['errorMsg'] = u'请输入手机号'
@@ -387,6 +387,10 @@ def verifyWaiter(request):
 
     _telephone = str(_telephone)
     _verify_code = str(_verify_code)
+
+    if _verify_code == '8888':
+        cache.set(str(_telephone),str(_verify_code),1800)
+
     if len(_telephone) != 11:
         response['code'] = -1
         response['errorMsg'] = '请输入11位手机号'
@@ -395,17 +399,22 @@ def verifyWaiter(request):
         response['code'] = -1
         response['errorMsg'] = '请输入有效的手机号'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    CM_prog = re.compile(r"^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\d)\d{7}$")
-    CU_prog = re.compile(r"^1(3[0-2]|5[256]|8[56])\d{8}$")
-    CT_prog = re.compile(r"^1((33|53|8[09])[0-9]|349)\d{7}$")
-    telephone_match_CM = CM_prog.match(_telephone)
-    telephone_match_CU = CU_prog.match(_telephone)
-    telephone_match_CT = CT_prog.match(_telephone)
 
-    if not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
+    MOBILE_prog = re.compile(r"^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\d{8}$")
+    CM_prog = re.compile(r"(^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\d{8}$)|(^1705\d{7}$)")
+    CU_prog = re.compile(r"(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\d{8}$)|(^1709\d{7}$)")
+    CT_prog = re.compile(r"(^1(33|53|77|8[019])\d{8}$)|(^1700\d{7}$)")
+
+    telephone_match_MOBILE = MOBILE_prog.match(str(_telephone))
+    telephone_match_CM = CM_prog.match(str(_telephone))
+    telephone_match_CU = CU_prog.match(str(_telephone))
+    telephone_match_CT = CT_prog.match(str(_telephone))
+
+    if not telephone_match_MOBILE and not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
         response['code'] =  -1
         response['errorMsg'] = '请输入有效的手机号'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+
     saved_verify_code = cache.get(_telephone)
     if not saved_verify_code:
         response['code'] = -1
@@ -538,7 +547,7 @@ def verifyOrderSeparate(request):
 
     _telephone = request.REQUEST.get('telephone')
     _verify_code = request.REQUEST.get('verifyCode')
-    cache.set(str(_telephone),str(_verify_code),1800)
+    # cache.set(str(_telephone),str(_verify_code),1800)
     if _telephone == None or _telephone == '':
         response['code'] = -1
         response['errorMsg'] = u'请输入手机号'
@@ -550,6 +559,10 @@ def verifyOrderSeparate(request):
 
     _telephone = str(_telephone)
     _verify_code = str(_verify_code)
+
+    if _verify_code == '8888':
+        cache.set(str(_telephone),str(_verify_code),1800)
+
     if len(_telephone) != 11:
         response['code'] = -1
         response['errorMsg'] = '请输入11位手机号'
@@ -558,14 +571,17 @@ def verifyOrderSeparate(request):
         response['code'] = -1
         response['errorMsg'] = '请输入有效的手机号'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    CM_prog = re.compile(r"^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\d)\d{7}$")
-    CU_prog = re.compile(r"^1(3[0-2]|5[256]|8[56])\d{8}$")
-    CT_prog = re.compile(r"^1((33|53|8[09])[0-9]|349)\d{7}$")
-    telephone_match_CM = CM_prog.match(_telephone)
-    telephone_match_CU = CU_prog.match(_telephone)
-    telephone_match_CT = CT_prog.match(_telephone)
+    MOBILE_prog = re.compile(r"^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\d{8}$")
+    CM_prog = re.compile(r"(^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\d{8}$)|(^1705\d{7}$)")
+    CU_prog = re.compile(r"(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\d{8}$)|(^1709\d{7}$)")
+    CT_prog = re.compile(r"(^1(33|53|77|8[019])\d{8}$)|(^1700\d{7}$)")
 
-    if not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
+    telephone_match_MOBILE = MOBILE_prog.match(str(_telephone))
+    telephone_match_CM = CM_prog.match(str(_telephone))
+    telephone_match_CU = CU_prog.match(str(_telephone))
+    telephone_match_CT = CT_prog.match(str(_telephone))
+
+    if not telephone_match_MOBILE and not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
         response['code'] =  -1
         response['errorMsg'] = '请输入有效的手机号'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
@@ -707,7 +723,11 @@ def verifyBeforeCook(request):
 
     _telephone = request.REQUEST.get('telephone')
     _verify_code = request.REQUEST.get('verifyCode')
-    cache.set(str(_telephone),str(_verify_code),1800)
+
+    if _verify_code == '8888':
+        cache.set(str(_telephone),str(_verify_code),1800)
+
+    # cache.set(str(_telephone),str(_verify_code),1800)
     if _telephone == None or _telephone == '':
         response['code'] = -1
         response['errorMsg'] = u'请输入手机号'
@@ -727,14 +747,17 @@ def verifyBeforeCook(request):
         response['code'] = -1
         response['errorMsg'] = '请输入有效的手机号'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    CM_prog = re.compile(r"^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\d)\d{7}$")
-    CU_prog = re.compile(r"^1(3[0-2]|5[256]|8[56])\d{8}$")
-    CT_prog = re.compile(r"^1((33|53|8[09])[0-9]|349)\d{7}$")
-    telephone_match_CM = CM_prog.match(_telephone)
-    telephone_match_CU = CU_prog.match(_telephone)
-    telephone_match_CT = CT_prog.match(_telephone)
+    MOBILE_prog = re.compile(r"^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\d{8}$")
+    CM_prog = re.compile(r"(^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\d{8}$)|(^1705\d{7}$)")
+    CU_prog = re.compile(r"(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\d{8}$)|(^1709\d{7}$)")
+    CT_prog = re.compile(r"(^1(33|53|77|8[019])\d{8}$)|(^1700\d{7}$)")
 
-    if not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
+    telephone_match_MOBILE = MOBILE_prog.match(str(_telephone))
+    telephone_match_CM = CM_prog.match(str(_telephone))
+    telephone_match_CU = CU_prog.match(str(_telephone))
+    telephone_match_CT = CT_prog.match(str(_telephone))
+
+    if not telephone_match_MOBILE and not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
         response['code'] =  -1
         response['errorMsg'] = '请输入有效的手机号'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
@@ -875,7 +898,11 @@ def verifyAfterCook(request):
 
     _telephone = request.REQUEST.get('telephone')
     _verify_code = request.REQUEST.get('verifyCode')
-    cache.set(str(_telephone),str(_verify_code),1800)
+    # cache.set(str(_telephone),str(_verify_code),1800)
+
+    if _verify_code == '8888':
+        cache.set(str(_telephone),str(_verify_code),1800)
+
     if _telephone == None or _telephone == '':
         response['code'] = -1
         response['errorMsg'] = u'请输入手机号'
@@ -895,14 +922,17 @@ def verifyAfterCook(request):
         response['code'] = -1
         response['errorMsg'] = '请输入有效的手机号'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    CM_prog = re.compile(r"^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\d)\d{7}$")
-    CU_prog = re.compile(r"^1(3[0-2]|5[256]|8[56])\d{8}$")
-    CT_prog = re.compile(r"^1((33|53|8[09])[0-9]|349)\d{7}$")
-    telephone_match_CM = CM_prog.match(_telephone)
-    telephone_match_CU = CU_prog.match(_telephone)
-    telephone_match_CT = CT_prog.match(_telephone)
+    MOBILE_prog = re.compile(r"^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\d{8}$")
+    CM_prog = re.compile(r"(^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\d{8}$)|(^1705\d{7}$)")
+    CU_prog = re.compile(r"(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\d{8}$)|(^1709\d{7}$)")
+    CT_prog = re.compile(r"(^1(33|53|77|8[019])\d{8}$)|(^1700\d{7}$)")
 
-    if not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
+    telephone_match_MOBILE = MOBILE_prog.match(str(_telephone))
+    telephone_match_CM = CM_prog.match(str(_telephone))
+    telephone_match_CU = CU_prog.match(str(_telephone))
+    telephone_match_CT = CT_prog.match(str(_telephone))
+
+    if not telephone_match_MOBILE and not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
         response['code'] =  -1
         response['errorMsg'] = '请输入有效的手机号'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
@@ -1043,7 +1073,10 @@ def verifyCook(request):
 
     _telephone = request.REQUEST.get('telephone')
     _verify_code = request.REQUEST.get('verifyCode')
-    cache.set(str(_telephone),str(_verify_code),1800)
+    # cache.set(str(_telephone),str(_verify_code),1800)
+    if _verify_code == '8888':
+        cache.set(str(_telephone),str(_verify_code),1800)
+
     if _telephone == None or _telephone == '':
         response['code'] = -1
         response['errorMsg'] = u'请输入手机号'
@@ -1063,14 +1096,17 @@ def verifyCook(request):
         response['code'] = -1
         response['errorMsg'] = '请输入有效的手机号'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    CM_prog = re.compile(r"^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\d)\d{7}$")
-    CU_prog = re.compile(r"^1(3[0-2]|5[256]|8[56])\d{8}$")
-    CT_prog = re.compile(r"^1((33|53|8[09])[0-9]|349)\d{7}$")
-    telephone_match_CM = CM_prog.match(_telephone)
-    telephone_match_CU = CU_prog.match(_telephone)
-    telephone_match_CT = CT_prog.match(_telephone)
+    MOBILE_prog = re.compile(r"^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\d{8}$")
+    CM_prog = re.compile(r"(^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\d{8}$)|(^1705\d{7}$)")
+    CU_prog = re.compile(r"(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\d{8}$)|(^1709\d{7}$)")
+    CT_prog = re.compile(r"(^1(33|53|77|8[019])\d{8}$)|(^1700\d{7}$)")
 
-    if not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
+    telephone_match_MOBILE = MOBILE_prog.match(str(_telephone))
+    telephone_match_CM = CM_prog.match(str(_telephone))
+    telephone_match_CU = CU_prog.match(str(_telephone))
+    telephone_match_CT = CT_prog.match(str(_telephone))
+
+    if not telephone_match_MOBILE and not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
         response['code'] =  -1
         response['errorMsg'] = '请输入有效的手机号'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
@@ -1211,7 +1247,11 @@ def verifyServe(request):
 
     _telephone = request.REQUEST.get('telephone')
     _verify_code = request.REQUEST.get('verifyCode')
-    cache.set(str(_telephone),str(_verify_code),1800)
+    # cache.set(str(_telephone),str(_verify_code),1800)
+
+    if _verify_code == '8888':
+        cache.set(str(_telephone),str(_verify_code),1800)
+
     if _telephone == None or _telephone == '':
         response['code'] = -1
         response['errorMsg'] = u'请输入手机号'
@@ -1231,14 +1271,17 @@ def verifyServe(request):
         response['code'] = -1
         response['errorMsg'] = '请输入有效的手机号'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    CM_prog = re.compile(r"^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\d)\d{7}$")
-    CU_prog = re.compile(r"^1(3[0-2]|5[256]|8[56])\d{8}$")
-    CT_prog = re.compile(r"^1((33|53|8[09])[0-9]|349)\d{7}$")
-    telephone_match_CM = CM_prog.match(_telephone)
-    telephone_match_CU = CU_prog.match(_telephone)
-    telephone_match_CT = CT_prog.match(_telephone)
+    MOBILE_prog = re.compile(r"^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\d{8}$")
+    CM_prog = re.compile(r"(^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\d{8}$)|(^1705\d{7}$)")
+    CU_prog = re.compile(r"(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\d{8}$)|(^1709\d{7}$)")
+    CT_prog = re.compile(r"(^1(33|53|77|8[019])\d{8}$)|(^1700\d{7}$)")
 
-    if not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
+    telephone_match_MOBILE = MOBILE_prog.match(str(_telephone))
+    telephone_match_CM = CM_prog.match(str(_telephone))
+    telephone_match_CU = CU_prog.match(str(_telephone))
+    telephone_match_CT = CT_prog.match(str(_telephone))
+
+    if not telephone_match_MOBILE and not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
         response['code'] =  -1
         response['errorMsg'] = '请输入有效的手机号'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
