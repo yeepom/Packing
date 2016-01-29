@@ -1,7 +1,7 @@
 #encoding:utf-8
 from django.http import HttpResponse
 import sys,json
-from pack.models import Shop,Category,OrderSeparate
+from pack.models import Shop,Category,Serve
 from django.views.decorators.csrf import csrf_exempt
 import logging
 from django.core.exceptions import ObjectDoesNotExist
@@ -12,7 +12,7 @@ sys.setdefaultencoding('utf8')
 
 
 @csrf_exempt
-def addOrderSeparatesToCategory(request):
+def addServesToCategory(request):
     logger = logging.getLogger('Pack.app')
     logger.info(request)
     response = {}
@@ -46,8 +46,8 @@ def addOrderSeparatesToCategory(request):
         response['code'] = -1
         response['errorMsg'] = '获取类别id失败'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    _orderSeparateList = request.REQUEST.getlist('orderSeparateList[]')
-    if _orderSeparateList == []:
+    _serveList = request.REQUEST.getlist('serveList[]')
+    if _serveList == []:
         response['code'] = -1
         response['errorMsg'] = '获取配菜列表失败'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
@@ -58,51 +58,49 @@ def addOrderSeparatesToCategory(request):
         response['code'] = -1
         response['errorMsg'] = '获取类别失败'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    if category.categoryType == '0' or category.categoryType == '1' or category.categoryType == '2' or \
-        category.categoryType == '3' or category.categoryType == '10' or category.categoryType == '11' or \
-        category.categoryType == '12' or category.categoryType == '13':
+    if category.categoryType == '10' or category.categoryType == '11' or category.categoryType == '12':
 
-        response_orderSeparateList = []
-        for _orderSeparateId in _orderSeparateList:
-            _orderSeparateId = str(_orderSeparateId)
+        response_serveList = []
+        for _serveId in _serveList:
+            _serveId = str(_serveId)
             try:
-                orderSeparate = OrderSeparate.objects.get(id = _orderSeparateId)
+                serve = Serve.objects.get(id = _serveId)
             except ObjectDoesNotExist:
                 response['code'] = -1
-                response['errorMsg'] = '获取配菜失败'
+                response['errorMsg'] = '获取上菜员失败'
                 return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-            if orderSeparate.shopId != str(shop.id):
+            if serve.shopId != str(shop.id):
                 response['code'] = -1
-                response['errorMsg'] = '配菜'+orderSeparate.name+'不在您的店铺下，您无权执行该操作'
+                response['errorMsg'] = '上菜员'+serve.name+'不在您的店铺下，您无权执行该操作'
                 return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-            if orderSeparate.category == category:
+            if serve.category == category:
                 response['code'] = -1
                 response['errorMsg'] = '已经添加过啦'
                 return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-            elif orderSeparate.category == None:
-                orderSeparate.category = category
-                orderSeparate.save()
-                _orderSeparate = {}
-                _orderSeparate['orderSeparateId'] = orderSeparate.id
-                _orderSeparate['orderSeparateName'] = orderSeparate.name
-                _orderSeparate['orderSeparateTelephone'] = orderSeparate.telephone
-                _orderSeparate['everAttachCategory'] = '1' if orderSeparate.category != None else '0'
-                response_orderSeparateList.append(_orderSeparate)
+            elif serve.category == None:
+                serve.category = category
+                serve.save()
+                _serve = {}
+                _serve['serveId'] = serve.id
+                _serve['serveName'] = serve.name
+                _serve['serveTelephone'] = serve.telephone
+                _serve['everAttachCategory'] = '1' if serve.category != None else '0'
+                response_serveList.append(_serve)
             else:
                 response['code'] = -1
                 response['errorMsg'] = '已经与其他类别关联'
                 return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
         response['code'] = 0
-        response['data'] = response_orderSeparateList
+        response['data'] = response_serveList
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
     else:
         response['code'] = -1
-        response['errorMsg'] = '该品类无需添加配菜'
+        response['errorMsg'] = '该品类无需添加上菜员'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
 
 
 @csrf_exempt
-def removeOrderSeparateInCategory(request):
+def removeServeInCategory(request):
     response = {}
     response['data'] = {}
     response['errorMsg'] = ""
@@ -134,37 +132,35 @@ def removeOrderSeparateInCategory(request):
         response['code'] = -1
         response['errorMsg'] = '获取categoryId失败'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    _orderSeparateId = request.REQUEST.get('orderSeparateId')
-    if _orderSeparateId == None or _orderSeparateId == '':
+    _serveId = request.REQUEST.get('serveId')
+    if _serveId == None or _serveId == '':
         response['code'] = -1
-        response['errorMsg'] = '获取配菜id失败'
+        response['errorMsg'] = '获取上菜员id失败'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
     _categoryId = str(_categoryId)
-    _orderSeparateId = str(_orderSeparateId)
+    _serveId = str(_serveId)
     try:
         category = Category.objects.get(id = _categoryId)
     except ObjectDoesNotExist:
         response['code'] = -1
         response['errorMsg'] = '获取category失败'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    orderSeparateCount = category.orderseparate_set.count()
-    if category.categoryType == '0' or category.categoryType == '1' or category.categoryType == '2' or \
-        category.categoryType == '3' or category.categoryType == '10' or category.categoryType == '11' or \
-        category.categoryType == '12' or category.categoryType == '13':
-        if orderSeparateCount <= 1:
+    serveCount = category.serve_set.count()
+    if category.categoryType == '10' or category.categoryType == '11' or category.categoryType == '12':
+        if serveCount <= 1:
             response['code'] = -1
-            response['errorMsg'] = '至少有一个配菜'
+            response['errorMsg'] = '至少有一个上菜员'
             return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-        elif orderSeparateCount > 1:
+        elif serveCount >1:
             try:
-                orderSeparate = OrderSeparate.objects.get(id = _orderSeparateId)
+                serve = Serve.objects.get(id = _serveId)
             except ObjectDoesNotExist:
                 response['code'] = -1
                 response['errorMsg'] = '获取配菜失败'
                 return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-            if str(orderSeparate.category.id) == _categoryId:
-                orderSeparate.category = None
-                orderSeparate.save()
+            if str(serve.category.id) == _categoryId:
+                serve.category = None
+                serve.save()
                 response['code'] = 0
                 return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
             else:
@@ -178,7 +174,7 @@ def removeOrderSeparateInCategory(request):
 
 
 @csrf_exempt
-def getOrderSeparatesInCategory(request):
+def getServesInCategory(request):
     response = {}
     response['data'] = {}
     response['errorMsg'] = ""
@@ -216,24 +212,24 @@ def getOrderSeparatesInCategory(request):
         response['code'] = -1
         response['errorMsg'] = '获取category失败'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    orderSeparateList = category.orderseparate_set.all()
+    serveList = category.serve_set.all()
 
-    _orderSeparateList = []
-    for orderSeparate in orderSeparateList:
-        _orderSeparate = {}
-        _orderSeparate['orderSeparateId'] = orderSeparate.id
-        _orderSeparate['orderSeparateName'] = orderSeparate.name
-        _orderSeparate['orderSeparateTelephone'] = orderSeparate.telephone
-        _orderSeparate['everAttachCategory'] = '1' if orderSeparate.category != None else '0'
-        _orderSeparateList.append(_orderSeparate)
+    _serveList = []
+    for serve in serveList:
+        _serve = {}
+        _serve['serveId'] = serve.id
+        _serve['serveName'] = serve.name
+        _serve['serveTelephone'] = serve.telephone
+        _serve['everAttachCategory'] = '1' if serve.category != None else '0'
+        _serveList.append(_serve)
     response['code'] = 0
-    response['data'] = _orderSeparateList
+    response['data'] = _serveList
     return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
 
 
 
 @csrf_exempt
-def getFreeOrderSeparateList(request):
+def getFreeServeList(request):
     response = {}
     response['data'] = {}
     response['errorMsg'] = ""
@@ -259,17 +255,17 @@ def getFreeOrderSeparateList(request):
         response['errorMsg'] = '上次登录失效，请重新登录'
         return HttpResponse(json.dumps(response),content_type="application/json")
     ####################END#################
-    orderSeparateQuery = OrderSeparate.objects.filter(shopId = str(_shopId)).filter(category = None)
+    serveQuery = Serve.objects.filter(shopId = str(_shopId)).filter(category = None)
 
-    _orderSeparateList = []
-    for orderSeparate in orderSeparateQuery:
-        _orderSeparate = {}
-        _orderSeparate['orderSeparateId'] = orderSeparate.id
-        _orderSeparate['orderSeparateName'] = orderSeparate.name
-        _orderSeparate['orderSeparateTelephone'] = orderSeparate.telephone
-        _orderSeparate['everAttachCategory'] = '1' if orderSeparate.category != None else '0'
-        _orderSeparateList.append(_orderSeparate)
+    _serveList = []
+    for serve in serveQuery:
+        _serve = {}
+        _serve['serveId'] = serve.id
+        _serve['serveName'] = serve.name
+        _serve['serveTelephone'] = serve.telephone
+        _serve['everAttachCategory'] = '1' if serve.category != None else '0'
+        _serveList.append(_serve)
     response['code'] = 0
-    response['data'] = _orderSeparateList
+    response['data'] = _serveList
     return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
 

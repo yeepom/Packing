@@ -1,7 +1,6 @@
 #encoding:utf-8
 from django.http import HttpResponse
-from pack.models import Order,User,OrderRecord,Waiter,Table
-import json,sys,datetime
+import json,sys
 from django.views.decorators.csrf import csrf_exempt
 import pingpp,logging
 from django.core.exceptions import ObjectDoesNotExist

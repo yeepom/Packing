@@ -2,13 +2,13 @@ __author__ = 'mike'
 #encoding:utf-8
 from django.http import HttpResponse
 import sys,json,datetime
-from pack.models import Order,Waiter,OrderSku,Table,OrderRecord,User,OrderSku
+from pack.models import Order,Waiter,OrderSku,Table,User,OrderSku
 from django.views.decorators.csrf import csrf_exempt
 import logging
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from pack.pack_push_2_user import pushAPNToUser,pushMessageToSingle
-from pack.tasks import waiterPushMessage,waiterPushMessageWithCalcelOrderSkus,waiterPushMessageWithAddSkus
+from pack.tasks import waiterPushMessage,waiterPushMessageWithCancelOrderSkus,waiterPushMessageWithAddSkus
 import pytz
 
 reload(sys)
@@ -126,12 +126,6 @@ def submitOrder(request):
         order.save()
         table.status = '3'
         table.save()
-        # submitRecord = u'点菜成功，订单号为：'.encode('utf-8')
-        # submitRecord = submitRecord + str(order.id)
-        # submitRecord = submitRecord + u'，桌号为：'.encode('utf-8')
-        # submitRecord = submitRecord + str(table.number)
-        # record = OrderRecord(record = submitRecord,order=order,date = datetime.datetime.now())
-        # record.save()
 
         _orderSkuList = []
         for index in range(len(_categoryIdList)):
@@ -454,7 +448,7 @@ def waiterCancelOrderSku(request):
         _sku['skuQuantity'] = float(orderSku.skuQuantity)
         _sku['skuStatus'] = orderSku.status
         response_data['orderSkuInfo'] = _sku
-        waiterPushMessageWithCalcelOrderSkus.delay(str(order.id))
+        waiterPushMessageWithCancelOrderSkus.delay(str(order.id))
         response['code'] = 0
         response['data'] = response_data
         return HttpResponse(json.dumps(response),content_type="application/json")
@@ -516,8 +510,6 @@ def waiterFinishOrder(request):
             order.status = '4'
             order.save()
             submitRecord = u'就餐完毕'.encode('utf-8')
-            record = OrderRecord(record = submitRecord,order=order,date = datetime.datetime.now())
-            record.save()
 
             try:
                 table = Table.objects.get(id = str(order.tableId))
@@ -606,10 +598,10 @@ def waiterGetShopDoingOrderList(request):
 
     _orderId = str(_orderId)
     if _orderId == '0':
-        orderQuery = Order.objects.filter(waiterId =str(waiter.id)).filter(Q(status = '0') | Q (status = '4') )
+        orderQuery = Order.objects.filter(waiterId =str(waiter.id)).filter(status = '0').order_by('-id')
     else:
-        orderQuery = Order.objects.filter(waiterId =str(waiter.id)).filter(Q(status = '0') | Q (status = '4')).filter(id__lt = _orderId)
-    orders = orderQuery.reverse()[0:0+_limit]
+        orderQuery = Order.objects.filter(waiterId =str(waiter.id)).filter(status = '0').filter(id__lt = _orderId).order_by('-id')
+    orders = orderQuery[0:0+_limit]
     orderList = []
     for order in orders:
         _order = {}

@@ -1,6 +1,6 @@
 #encoding:utf-8
 from django.http import HttpResponse
-from pack.models import Shop,Waiter,Cook,Serve,Order,OrderSku,OrderSeparate,BeforeCook,AfterCook
+from pack.models import Shop,Waiter,Serve,Order,OrderSku,OrderSeparate,BeforeCook,AfterCook
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.cache import cache
@@ -88,6 +88,7 @@ def getMemberList(request):
         _serve['serveId'] = str(serve.id)
         _serve['serveName'] = serve.name
         _serve['serveTelephone'] = serve.telephone
+        _serve['everAttachCategory'] = '1' if serve.category != None else '0'
         _serveList.append(_serve)
     response_data['serveList'] = _serveList
 
@@ -262,48 +263,6 @@ def getAfterCookList(request):
 
 
 @csrf_exempt
-def getCookList(request):
-    response = {}
-    response['data'] = {}
-    response['errorMsg'] = ""
-    _shopId = request.session.get('shopId')
-    if not _shopId:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    ##################JUDGE############
-    _lastLoginTime = request.session.get('lastLoginTime')
-    if not _lastLoginTime:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    try:
-        shop = Shop.objects.get(id = _shopId)
-    except ObjectDoesNotExist:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    if _lastLoginTime != shop.lastLoginTime:
-        response['code'] = 1
-        response['errorMsg'] = '上次登录失效，请重新登录'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    ####################END#################
-
-    cookQuery = Cook.objects.filter(shopId = str(_shopId)).order_by('-id')
-    _cookList = []
-    for cook in cookQuery:
-        _cook = {}
-        _cook['cookId'] = str(cook.id)
-        _cook['cookName'] = cook.name
-        _cook['cookTelephone'] = cook.telephone
-        _cook['everAttachCategory'] = '1' if cook.category != None else '0'
-        _cookList.append(_cook)
-    response['code'] = 0
-    response['data'] = _cookList
-    return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-
-
-@csrf_exempt
 def getServeList(request):
     response = {}
     response['data'] = {}
@@ -338,6 +297,7 @@ def getServeList(request):
         _serve['serveId'] = str(serve.id)
         _serve['serveName'] = serve.name
         _serve['serveTelephone'] = serve.telephone
+        _serve['everAttachCategory'] = '1' if serve.category != None else '0'
         _serveList.append(_serve)
     response['code'] = 0
     response['data'] = _serveList
@@ -1043,179 +1003,6 @@ def removeAfterCook(request):
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
 
 
-@csrf_exempt
-def verifyCook(request):
-    response = {}
-    response['data'] = {}
-    response['errorMsg'] = ""
-    _shopId = request.session.get('shopId')
-    if not _shopId:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    ##################JUDGE############
-    _lastLoginTime = request.session.get('lastLoginTime')
-    if not _lastLoginTime:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    try:
-        shop = Shop.objects.get(id = _shopId)
-    except ObjectDoesNotExist:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    if _lastLoginTime != shop.lastLoginTime:
-        response['code'] = 1
-        response['errorMsg'] = '上次登录失效，请重新登录'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    ####################END#################
-
-    _telephone = request.REQUEST.get('telephone')
-    _verify_code = request.REQUEST.get('verifyCode')
-    # cache.set(str(_telephone),str(_verify_code),1800)
-    if _verify_code == '8888':
-        cache.set(str(_telephone),str(_verify_code),1800)
-
-    if _telephone == None or _telephone == '':
-        response['code'] = -1
-        response['errorMsg'] = u'请输入手机号'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    if  _verify_code == None or _verify_code == '':
-        response['code'] = -1
-        response['errorMsg'] = u'请输入验证码'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-
-    _telephone = str(_telephone)
-    _verify_code = str(_verify_code)
-    if len(_telephone) != 11:
-        response['code'] = -1
-        response['errorMsg'] = '请输入11位手机号'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    if _telephone.isdigit() == False:
-        response['code'] = -1
-        response['errorMsg'] = '请输入有效的手机号'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    MOBILE_prog = re.compile(r"^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\d{8}$")
-    CM_prog = re.compile(r"(^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\d{8}$)|(^1705\d{7}$)")
-    CU_prog = re.compile(r"(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\d{8}$)|(^1709\d{7}$)")
-    CT_prog = re.compile(r"(^1(33|53|77|8[019])\d{8}$)|(^1700\d{7}$)")
-
-    telephone_match_MOBILE = MOBILE_prog.match(str(_telephone))
-    telephone_match_CM = CM_prog.match(str(_telephone))
-    telephone_match_CU = CU_prog.match(str(_telephone))
-    telephone_match_CT = CT_prog.match(str(_telephone))
-
-    if not telephone_match_MOBILE and not telephone_match_CM and not telephone_match_CT and not telephone_match_CU:
-        response['code'] =  -1
-        response['errorMsg'] = '请输入有效的手机号'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    saved_verify_code = cache.get(_telephone)
-    if not saved_verify_code:
-        response['code'] = -1
-        response['errorMsg'] = '请重新发送验证码'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    if saved_verify_code != _verify_code:
-        response['code'] = -1
-        response['errorMsg'] = '验证码错误，请重新输入'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    query_cook = Cook.objects.filter(telephone = _telephone)
-    if not query_cook.exists():
-        _name = '****'+_telephone[7:11]
-        _headImage = 'http://meiyue.b0.upaiyun.com/head/1_head.jpg'
-        cook = Cook(telephone = _telephone, name = _name, headImage = _headImage,shopId = str(shop.id))
-        cook.save()
-        response['code'] = 0
-        response_data = {}
-        response_data['cookId'] = str(cook.id)
-        response_data['cookName'] = cook.name
-        response_data['cookTelephone'] = cook.telephone
-        response_data['everAttachCategory'] = '0'
-        response['data'] = response_data
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    cook = query_cook[0]
-    if cook.shopId == str(shop.id):
-        response['code'] = -1
-        response['errorMsg'] = '该账号已经添加过'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    elif cook.shopId == "":
-        cook.shopId = str(shop.id)
-        cook.category = None
-        cook.save()
-        response['code'] = 0
-        response_data = {}
-        response_data['cookId'] = str(cook.id)
-        response_data['cookName'] = cook.name
-        response_data['cookTelephone'] = cook.telephone
-        response_data['everAttachCategory'] = '0'
-        response['data'] = response_data
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    else:
-        response['code'] = -1
-        response['errorMsg'] = '该账号已经被其他商家添加'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-
-
-@csrf_exempt
-def removeCook(request):
-    response = {}
-    response['data'] = {}
-    response['errorMsg'] = ""
-    _shopId = request.session.get('shopId')
-    if not _shopId:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    ##################JUDGE############
-    _lastLoginTime = request.session.get('lastLoginTime')
-    if not _lastLoginTime:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    try:
-        shop = Shop.objects.get(id = _shopId)
-    except ObjectDoesNotExist:
-        response['code'] = 1
-        response['errorMsg'] = '请先登录'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    if _lastLoginTime != shop.lastLoginTime:
-        response['code'] = 1
-        response['errorMsg'] = '上次登录失效，请重新登录'
-        return HttpResponse(json.dumps(response),content_type="application/json")
-    ####################END#################
-
-    _cookId = request.REQUEST.get('cookId')
-    if _cookId == None or _cookId == '':
-        response['code'] = -1
-        response['errorMsg'] = '获取cookId失败'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    _cookId = str(_cookId)
-    try:
-        cook = Cook.objects.get(id = _cookId)
-    except ObjectDoesNotExist:
-        response['code'] = -1
-        response['errorMsg'] = '获取厨师失败'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    if cook.shopId == str(shop.id):
-        orderSkuQuery = OrderSku.objects.filter(cookId = str(str(cook.id))).filter(status = '6')
-        if orderSkuQuery.exists():
-            response['code'] = -1
-            response['errorMsg'] = '该厨师正在忙碌中'
-            return HttpResponse(json.dumps(response),content_type="application/json")
-        if cook.category == None:
-            cook.shopId = ''
-            cook.save()
-            response['code'] = 0
-            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-        else:
-            response['code'] = -1
-            response['errorMsg'] = '请在品类中将该厨师解绑，然后再删除'
-            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    else:
-        response['code'] = -1
-        response['errorMsg'] = '该账号未关联'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-
 
 @csrf_exempt
 def verifyServe(request):
@@ -1305,6 +1092,7 @@ def verifyServe(request):
         response_data['serveId'] = str(serve.id)
         response_data['serveName'] = serve.name
         response_data['serveTelephone'] = serve.telephone
+        response_data['everAttachCategory'] = '0'
         response['data'] = response_data
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
     serve = query_wait_serve[0]
@@ -1321,6 +1109,7 @@ def verifyServe(request):
         response_data['serveId'] = str(serve.id)
         response_data['serveName'] = serve.name
         response_data['serveTelephone'] = serve.telephone
+        response_data['everAttachCategory'] = '0'
         response['data'] = response_data
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
 

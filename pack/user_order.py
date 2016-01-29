@@ -2,7 +2,7 @@
 #encoding:utf-8
 from django.http import HttpResponse
 import sys,json
-from pack.models import User,OrderRecord,Order,OrderSku,Waiter
+from pack.models import User,Order,OrderSku,Waiter
 from django.views.decorators.csrf import csrf_exempt
 from pack.pack_push_2_shop import pushAPNToShop
 from pack.messageNotify import notify
@@ -168,16 +168,6 @@ def getUserOrderDetail(request):
         _sku['skuQuantity'] = float(orderSKU.number)
         _skuList.append(_sku)
     _order['skuList'] = _skuList
-    _orderRecordList = []
-    orderRecordList = OrderRecord.objects.filter(order__id = _orderId).order_by('-id')
-    for orderRecord in  orderRecordList:
-        _orderRecord = {}
-        _orderRecord['record'] = orderRecord.record
-        shanghai_tz = pytz.timezone('Asia/Shanghai')
-        date = orderRecord.date.astimezone(shanghai_tz)
-        _orderRecord['date'] = date.strftime('%Y/%m/%d %H:%M:%S')
-        _orderRecordList.append(_orderRecord)
-    _order['orderRecord'] = _orderRecordList
     try:
         waiter = Waiter.objects.get(id = str(order.waiterId))
     except ObjectDoesNotExist:
@@ -195,24 +185,4 @@ def getUserOrderDetail(request):
         response['data'] = _order
         response['code'] = 0
         return HttpResponse(json.dumps(response),content_type="application/json")
-
-def test(request):
-    '''response = pushMessageToSingle('25b5663a72b19311b3fdef7db65b4ff3',0)
-    print response
-    rst = response['result']
-    if rst == 'ok':
-        return HttpResponse('11')
-
-    return HttpResponse('11')
-
-    params = urllib.urlencode({'orderId':'1'})
-    url_req = "http://127.0.0.1:8000/getShopOrderDetail"
-    sms_req = urllib2.Request(url = url_req, data = params)
-    sms_response = urllib2.urlopen(sms_req)
-    sms_response=sms_response.read()
-    return HttpResponse(sms_response)
-'''
-    response = notify('18201637776','2')
-    print response
-    return HttpResponse('yes')
 

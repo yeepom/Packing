@@ -2,7 +2,7 @@ __author__ = 'mike'
 #encoding:utf-8
 from django.http import HttpResponse
 import sys,json
-from pack.models import BeforeCook,OrderSku,Cook
+from pack.models import BeforeCook,OrderSku
 from django.views.decorators.csrf import csrf_exempt
 import logging
 from django.core.exceptions import ObjectDoesNotExist
@@ -106,7 +106,6 @@ def beforeCookFinishOrderSkuList(request):
         response['errorMsg'] = '请输入订单id'
         return HttpResponse(json.dumps(response),content_type="application/json")
 
-    beforeCookPushMessage.delay(_orderSkuList)
 
     for _orderSkuId in _orderSkuList:
         _orderSkuId = str(_orderSkuId)
@@ -124,6 +123,7 @@ def beforeCookFinishOrderSkuList(request):
             response['code'] = -1
             response['errorMsg'] = 'orderSku状态错误'
             return HttpResponse(json.dumps(response),content_type="application/json")
+    beforeCookPushMessage.delay(_orderSkuList)
     response['code'] = 0
     return HttpResponse(json.dumps(response),content_type="application/json")
 

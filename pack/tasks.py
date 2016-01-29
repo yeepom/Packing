@@ -34,7 +34,9 @@ def waiterPushMessage(orderId):
     orderSkus = order.ordersku_set.filter(status = "0").order_by('categoryId')
     for orderSku in orderSkus:
 
-        if orderSku.categoryType == '0' or orderSku.categoryType == '1' or orderSku.categoryType == '2':
+        if orderSku.categoryType == '0' or orderSku.categoryType == '1' or orderSku.categoryType == '2'\
+               or orderSku.categoryType == '10' or orderSku.categoryType == '11' or orderSku.categoryType == '12'\
+                or orderSku.categoryType == '13':
             try:
                 category = Category.objects.get(id = orderSku.categoryId)
             except ObjectDoesNotExist:
@@ -53,7 +55,9 @@ def waiterPushMessage(orderId):
                 pushAPNToShop(orderSeparate.deviceToken,'0',payload)
             else:
                 pushMessageToSingle(orderSeparate.clientID,payload)
-
+        elif orderSku.categoryType == '14':
+            orderSku.status='100'
+            orderSku.save()
         elif orderSku.categoryType == '3':
             try:
                 shop = Shop.objects.get(id = orderSku.shopId)
@@ -106,7 +110,9 @@ def waiterPushMessageWithAddSkus(orderId):
     orderSkus = order.ordersku_set.filter(status = "0").order_by('categoryId')
     for orderSku in orderSkus:
 
-        if orderSku.categoryType == '0' or orderSku.categoryType == '1' or orderSku.categoryType == '2':
+        if orderSku.categoryType == '0' or orderSku.categoryType == '1' or orderSku.categoryType == '2'\
+               or orderSku.categoryType == '10' or orderSku.categoryType == '11' or orderSku.categoryType == '12'\
+                or orderSku.categoryType == '13':
             try:
                 category = Category.objects.get(id = orderSku.categoryId)
             except ObjectDoesNotExist:
@@ -125,6 +131,10 @@ def waiterPushMessageWithAddSkus(orderId):
                 pushAPNToShop(orderSeparate.deviceToken,'0',payload)
             else:
                 pushMessageToSingle(orderSeparate.clientID,payload)
+
+        elif orderSku.categoryType == '14':
+            orderSku.status='100'
+            orderSku.save()
 
         elif orderSku.categoryType == '3':
             try:
@@ -163,7 +173,7 @@ def waiterPushMessageWithAddSkus(orderId):
 
 @app.task()
 
-def waiterPushMessageWithCalcelOrderSkus(orderId):
+def waiterPushMessageWithCancelOrderSkus(orderId):
     logger = logging.getLogger('Pack.app')
     logger.info("waiterPushMessage")
     logger.info(orderId)
@@ -256,6 +266,57 @@ def orderSeparatePushMessage(orderSkuIdList):
             else:
                 pushMessageToSingle(serve.clientID,payload)
 
+        elif orderSku.categoryType == '10' and orderSku.status == '4' and orderSku.beforeCookId == '':
+            try:
+                category = Category.objects.get(id = orderSku.categoryId)
+            except ObjectDoesNotExist:
+                logger.info('查找不到category'+orderSku.categoryId)
+                break
+            beforeCookCount = category.beforecook_set.count()
+            index = int(orderSku.id) % beforeCookCount
+            beforeCook = category.beforecook_set.all()[index]
+            orderSku.beforeCookId = str(beforeCook.id)
+            orderSku.beforeCookName = beforeCook.name
+            orderSku.save()
+            payload = '{"method":"pushNewOrderSkusToBeforeCook"}'
+            if "iOS" in beforeCook.deviceInfo:
+                pushAPNToShop(beforeCook.deviceToken,'0',payload)
+            else:
+                pushMessageToSingle(beforeCook.clientID,payload)
+        elif orderSku.categoryType == '11' and orderSku.status == '6' and orderSku.afterCookId == '':
+            try:
+                category = Category.objects.get(id = orderSku.categoryId)
+            except ObjectDoesNotExist:
+                logger.info('查找不到category'+orderSku.categoryId)
+                break
+            afterCookCount = category.aftercook_set.count()
+            index = int(orderSku.id) % afterCookCount
+            afterCook = category.aftercook_set.all()[index]
+            orderSku.afterCookId = str(afterCook.id)
+            orderSku.afterCookName = afterCook.name
+            orderSku.save()
+            payload = '{"method":"pushNewOrderSkusToAfterCook"}'
+            if "iOS" in afterCook.deviceInfo:
+                pushAPNToShop(afterCook.deviceToken,'0',payload)
+            else:
+                pushMessageToSingle(afterCook.clientID,payload)
+        elif orderSku.categoryType == '12' and orderSku.status == '8' and orderSku.serveId == '':
+            try:
+                category = Category.objects.get(id = orderSku.categoryId)
+            except ObjectDoesNotExist:
+                logger.info('查找不到category'+orderSku.categoryId)
+                break
+            serveCount = category.serve_set.count()
+            index = int(orderSku.id) % serveCount
+            serve = category.serve_set.all()[index]
+            orderSku.serveId = str(serve.id)
+            orderSku.serveName = serve.name
+            orderSku.save()
+            payload = '{"method":"pushNewOrderSkusToServe"}'
+            if "iOS" in serve.deviceInfo:
+                pushAPNToShop(serve.deviceToken,'0',payload)
+            else:
+                pushMessageToSingle(serve.clientID,payload)
     logger.info('-------')
 
 
@@ -273,10 +334,22 @@ def beforeCookPushMessage(orderSkuIdList):
             break
         if orderSku.categoryType == '0' and orderSku.status == '6':
             try:
-                shop = Shop.objects.get(id = orderSku.shopId)
+                category = Category.objects.get(id = orderSku.categoryId)
             except ObjectDoesNotExist:
-                logger.info('查找不到shop'+orderSku.shopId)
-                break
+                logger.info('查找不到category'+orderSku.categoryId)
+                return
+            afterCookCount = category.aftercook_set.count()
+            index = int(orderSku.id) % afterCookCount
+            afterCook = category.aftercook_set.all()[index]
+            orderSku.afterCookId = str(afterCook.id)
+            orderSku.afterCookName = afterCook.name
+            orderSku.save()
+            payload = '{"method":"pushNewOrderSkusToAfterCook"}'
+            if "iOS" in afterCook.deviceInfo:
+                pushAPNToShop(afterCook.deviceToken,'0',payload)
+            else:
+                pushMessageToSingle(afterCook.clientID,payload)
+        elif orderSku.categoryType == '10' and orderSku.status == '6':
             try:
                 category = Category.objects.get(id = orderSku.categoryId)
             except ObjectDoesNotExist:
@@ -293,7 +366,6 @@ def beforeCookPushMessage(orderSkuIdList):
                 pushAPNToShop(afterCook.deviceToken,'0',payload)
             else:
                 pushMessageToSingle(afterCook.clientID,payload)
-
     logger.info('-------')
 
 
@@ -355,5 +427,40 @@ def afterCookPushMessage(orderSkuIdList):
                 pushAPNToShop(serve.deviceToken,'0',payload)
             else:
                 pushMessageToSingle(serve.clientID,payload)
-
+        elif orderSku.categoryType == '10' and orderSku.status == '8':
+            try:
+                category = Category.objects.get(id = orderSku.categoryId)
+            except ObjectDoesNotExist:
+                logger.info('查找不到category'+orderSku.categoryId)
+                break
+            serveCount = category.serve_set.count()
+            index = int(orderSku.id) % serveCount
+            serve = category.serve_set.all()[index]
+            orderSku.serveId = str(serve.id)
+            orderSku.serveName = serve.name
+            orderSku.save()
+            payload = '{"method":"pushNewOrderSkusToServe"}'
+            if "iOS" in serve.deviceInfo:
+                pushAPNToShop(serve.deviceToken,'0',payload)
+            else:
+                pushMessageToSingle(serve.clientID,payload)
+        elif orderSku.categoryType == '11' and orderSku.status == '8':
+            try:
+                category = Category.objects.get(id = orderSku.categoryId)
+            except ObjectDoesNotExist:
+                logger.info('查找不到category'+orderSku.categoryId)
+                break
+            serveCount = category.serve_set.count()
+            index = int(orderSku.id) % serveCount
+            serve = category.serve_set.all()[index]
+            orderSku.serveId = str(serve.id)
+            orderSku.serveName = serve.name
+            orderSku.save()
+            logger.info("serveId")
+            logger.info(orderSku.serveId)
+            payload = '{"method":"pushNewOrderSkusToServe"}'
+            if "iOS" in serve.deviceInfo:
+                pushAPNToShop(serve.deviceToken,'0',payload)
+            else:
+                pushMessageToSingle(serve.clientID,payload)
     logger.info('-------')

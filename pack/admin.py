@@ -1,7 +1,7 @@
 from django.contrib import admin
-from pack.models import User,ShopWallet,Shop,Category,Waiter,Cook,Serve,BeforeCook,AfterCook,OrderSeparate
-from pack.models import Sku,Table,Order,OrderSku,OrderRecord,ShopEvaluate
-from pack.models import TransferMoney,ShopFeedBack,WaiterFeedBack,CookFeedBack,ServeFeedBack,UserFeedBack
+from pack.models import User,ShopWallet,Shop,Category,Waiter,Serve,BeforeCook,AfterCook,OrderSeparate
+from pack.models import Sku,Table,Order,OrderSku,ShopEvaluate
+from pack.models import TransferMoney,ShopFeedBack,WaiterFeedBack,ServeFeedBack,UserFeedBack
 from pack.models import OrderSeparateFeedBack,BeforeCookFeedBack,AfterCookFeedBack
 # Register your models here.
 
@@ -43,11 +43,6 @@ class OrderSeparateAdmin(admin.ModelAdmin):
                     'deviceToken','deviceInfo')
 admin.site.register(OrderSeparate,OrderSeparateAdmin)
 
-class CookAdmin(admin.ModelAdmin):
-    list_display = ('id','everSetInfo','shopId','category','telephone','name','headImage','clientID','lastLoginTime','clientID',
-                    'deviceToken','deviceInfo')
-admin.site.register(Cook,CookAdmin)
-
 class ServeAdmin(admin.ModelAdmin):
     list_display = ('id','everSetInfo','shopId','telephone','name','headImage','clientID','lastLoginTime','clientID',
                     'deviceToken','deviceInfo')
@@ -77,17 +72,12 @@ class OrderAdmin(admin.ModelAdmin):
 admin.site.register(Order,OrderAdmin)
 
 class OrderSkuAdmin(admin.ModelAdmin):
-    list_display = ('id','order','categoryId','tableId','tableNumber','skuId','skuName','skuPrice', 'skuSizeName',
-                    'skuQuantity','status','cookId','cookName','beforeCookId','beforeCookName','orderSeparateId',
-                    'orderSeparateName','afterCookId','afterCookName','serveId','serveName')
+    list_display = ('id','order','categoryId','categoryType','tableId','tableNumber','skuId','skuName','skuPrice',
+                    'skuSizeName','skuQuantity','status','cookId','cookName','beforeCookId','beforeCookName',
+                    'orderSeparateId','orderSeparateName','afterCookId','afterCookName','serveId','serveName')
 
 admin.site.register(OrderSku,OrderSkuAdmin)
 
-
-class OrderRecordAdmin(admin.ModelAdmin):
-    list_display = ('id','order','record','date')
-
-admin.site.register(OrderRecord,OrderRecordAdmin)
 
 class ShopEvaluateAdmin(admin.ModelAdmin):
     list_display = ('id','user','shop','star','date')
@@ -107,10 +97,6 @@ class WaiterFeedBackAdmin(admin.ModelAdmin):
 
 admin.site.register(WaiterFeedBack,WaiterFeedBackAdmin)
 
-class CookFeedBackAdmin(admin.ModelAdmin):
-    list_display = ('cook','msg')
-
-admin.site.register(CookFeedBack,CookFeedBackAdmin)
 
 class OrderSeparateFeedBackAdmin(admin.ModelAdmin):
     list_display = ('orderSeparate','msg')

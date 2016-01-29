@@ -69,21 +69,6 @@ def orderSeparateGetCurrentOrderSkuList(request):
         response['data'] = orderSkuList
         return HttpResponse(json.dumps(response),content_type="application/json")
 
-@csrf_exempt
-def testPush(request):
-    pushRst = pushMessageToSingle("bc8b02456bb6cc48842e2684e1fc8687",'{"method":"pushNewOrdersToSaler"}')
-    print pushRst
-    return HttpResponse(pushRst)
-
-@csrf_exempt
-def testPushIOS(request):
-    pushRst = pushAPNToShop("c08cf207be534650bfd07f983eee067cf1931b1df5f17374bfa4b48158bc52e8",'0','{"method":"pushNewOrdersToSaler"}')
-    return HttpResponse(pushRst)
-
-@csrf_exempt
-def testPushViaClientID(request):
-    pushRst = pushMessageToSingle("dcd7b53c18bc756642d883f192ffc063",'{"method":"pushNewOrdersToSaler"}')
-    return HttpResponse(pushRst)
 
 @csrf_exempt
 def orderSeparateFinishOrderSkuList(request):
@@ -139,6 +124,22 @@ def orderSeparateFinishOrderSkuList(request):
         elif orderSku.status == '2' and orderSku.categoryType =='2' and orderSku.orderSeparateId == str(orderSeparate.id):
             orderSku.status = '8'
             orderSku.save()
+        elif orderSku.status == '2' and orderSku.categoryType =='10' and orderSku.orderSeparateId == str(
+            orderSeparate.id):
+            orderSku.status = '4'
+            orderSku.save()
+        elif orderSku.status == '2' and orderSku.categoryType =='11' and orderSku.orderSeparateId == str(
+                orderSeparate.id):
+            orderSku.status = '6'
+            orderSku.save()
+        elif orderSku.status == '2' and orderSku.categoryType =='12' and orderSku.orderSeparateId == str(
+                orderSeparate.id):
+            orderSku.status = '8'
+            orderSku.save()
+        elif orderSku.status == '2' and orderSku.categoryType =='13' and orderSku.orderSeparateId == str(
+                orderSeparate.id):
+            orderSku.status = '10'
+            orderSku.save()
         else:
             response['code'] = -1
             response['errorMsg'] = '请刷新后重新操作'
@@ -146,3 +147,19 @@ def orderSeparateFinishOrderSkuList(request):
     orderSeparatePushMessage.delay(_orderSkuList)
     response['code'] = 0
     return HttpResponse(json.dumps(response),content_type="application/json")
+
+# @csrf_exempt
+# def testPush(request):
+#     pushRst = pushMessageToSingle("bc8b02456bb6cc48842e2684e1fc8687",'{"method":"pushNewOrdersToSaler"}')
+#     print pushRst
+#     return HttpResponse(pushRst)
+#
+# @csrf_exempt
+# def testPushIOS(request):
+#     pushRst = pushAPNToShop("c08cf207be534650bfd07f983eee067cf1931b1df5f17374bfa4b48158bc52e8",'0','{"method":"pushNewOrdersToSaler"}')
+#     return HttpResponse(pushRst)
+#
+# @csrf_exempt
+# def testPushViaClientID(request):
+#     pushRst = pushMessageToSingle("dcd7b53c18bc756642d883f192ffc063",'{"method":"pushNewOrdersToSaler"}')
+#     return HttpResponse(pushRst)

@@ -78,11 +78,17 @@ CATEGORY_TYPE_CHOICES=(
     (u'1',u'热菜无前打荷'),   #配菜+后打荷+上菜
     (u'2',u'凉菜'),   #配菜+上菜
     (u'3',u'饮品'),   #上菜
+
+    (u'10',u'四道流程'),    #配菜+前打荷+后打荷+上菜，每一个环节都是oneToOne指定的，
+    (u'11',u'三道流程'),    #配菜+后打荷+上菜，每一个环节都是oneToOne指定的，
+    (u'12',u'两道流程'),    #配菜+上菜，每一个环节都是oneToOne指定的，
+    (u'13',u'一道流程'),    #配菜，每一个环节都是oneToOne指定的，
+    (u'14',u'无流程'),    #无需流程
 )
 
 class Category(models.Model):
     shop = models.ForeignKey(Shop)
-    categoryType = models.CharField(max_length = 1,choices=CATEGORY_TYPE_CHOICES,default='0')
+    categoryType = models.CharField(max_length = 2,choices=CATEGORY_TYPE_CHOICES,default='10')
     categoryName = models.CharField(max_length = 20)
     def __unicode__(self):
         return ('id:%s,name:%s,' % (self.id,self.categoryName))
@@ -153,25 +159,10 @@ class AfterCook(models.Model):
     def __unicode__(self):
         return ('id:%s,telephone:%s,' % (self.id,self.telephone))
 
-
-class Cook(models.Model):
-    everSetInfo = models.BooleanField(default=False)
-    shopId = models.CharField('店铺Id',max_length=20,default='')
-    category = models.ForeignKey(Category,null=True)
-    telephone = models.CharField('电话',max_length=11,unique=True)
-    name = models.CharField('店员名',max_length = 50)
-    headImage = models.CharField('店员头像',max_length = 100)
-    status = models.CharField('状态',max_length=1,choices=SHOPPER_STATUS_CHOICES,default='0')
-    clientID = models.CharField(max_length = 100)
-    lastLoginTime = models.CharField('上次登录时间',max_length = 13, default = '0')
-    deviceToken = models.CharField('iOS设备号',max_length=64,default = '0')
-    deviceInfo = models.CharField('设备名称（iOS、Android）',max_length = 20, default='none')
-    def __unicode__(self):
-        return ('id:%s,telephone:%s,' % (self.id,self.telephone))
-
 class Serve(models.Model):
     everSetInfo = models.BooleanField(default=False)
     shopId = models.CharField('店铺Id',max_length=20,default='')
+    category = models.ForeignKey(Category,null=True)
     telephone = models.CharField('电话',max_length=11,unique=True)
     name = models.CharField('店员名',max_length = 50)
     headImage = models.CharField('店员头像',max_length = 100)
@@ -256,6 +247,8 @@ ORDERSKU_STATUS=(
 
     (u'10',u'已上菜'),#10
 
+    (u'100',u'无状态'),#100
+
     (u'200',u'取消'),#200
 )
 
@@ -286,12 +279,6 @@ class OrderSku(models.Model):
         return ('id:%s' % (self.id))
 
 
-class OrderRecord(models.Model):
-    order = models.ForeignKey(Order)
-    record = models.CharField('描述',max_length = 200)
-    date = models.DateTimeField('日期')
-
-
 class ShopEvaluate(models.Model):
     user = models.ForeignKey(User)
     shop = models.ForeignKey(Shop)
@@ -316,11 +303,6 @@ class ShopFeedBack(models.Model):
 
 class WaiterFeedBack(models.Model):
     waiter = models.ForeignKey(Waiter)
-    msg = models.CharField('内容',max_length = 400)
-    date = models.DateTimeField(default=datetime.now())
-
-class CookFeedBack(models.Model):
-    cook = models.ForeignKey(Cook)
     msg = models.CharField('内容',max_length = 400)
     date = models.DateTimeField(default=datetime.now())
 

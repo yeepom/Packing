@@ -58,7 +58,7 @@ def addBeforeCooksToCategory(request):
         response['code'] = -1
         response['errorMsg'] = '获取类别失败'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    if category.categoryType == '0':
+    if category.categoryType == '0' or category.categoryType == '10':
 
         response_beforeCookList = []
         for _beforeCookId in _beforeCookList:
@@ -146,30 +146,32 @@ def removeBeforeCookInCategory(request):
         response['errorMsg'] = '获取category失败'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
     beforeCookCount = category.beforecook_set.count()
-    if category.categoryType == '0' and beforeCookCount <= 1:
-        response['code'] = -1
-        response['errorMsg'] = '至少有一个前打荷'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    elif category.categoryType == '0' and beforeCookCount >1:
-        try:
-            beforeCook = BeforeCook.objects.get(id = _beforeCookId)
-        except ObjectDoesNotExist:
+    if category.categoryType == '0' or category.categoryType == '10':
+        if beforeCookCount <= 1:
             response['code'] = -1
-            response['errorMsg'] = '获取前打荷失败'
+            response['errorMsg'] = '至少有一个前打荷'
             return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-        if str(beforeCook.category.id) == _categoryId:
-            beforeCook.category = None
-            beforeCook.save()
-            response['code'] = 0
-            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-        else:
-            response['code'] = -1
-            response['errorMsg'] = '该账号未关联'
-            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        elif beforeCookCount > 1:
+            try:
+                beforeCook = BeforeCook.objects.get(id = _beforeCookId)
+            except ObjectDoesNotExist:
+                response['code'] = -1
+                response['errorMsg'] = '获取前打荷失败'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if str(beforeCook.category.id) == _categoryId:
+                beforeCook.category = None
+                beforeCook.save()
+                response['code'] = 0
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            else:
+                response['code'] = -1
+                response['errorMsg'] = '该账号未关联'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
     else:
         response['code'] = -1
         response['errorMsg'] = '您无法执行该操作'
         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+
 
 
 @csrf_exempt

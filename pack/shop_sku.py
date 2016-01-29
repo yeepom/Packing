@@ -1,7 +1,7 @@
 #encoding:utf-8
 from django.http import HttpResponse
 import sys,json
-from pack.models import Shop,Sku,Category,Cook,OrderSeparate,BeforeCook,AfterCook
+from pack.models import Shop,Sku,Category,Serve,OrderSeparate,BeforeCook,AfterCook
 from django.views.decorators.csrf import csrf_exempt
 import logging
 from django.core.exceptions import ObjectDoesNotExist
@@ -48,6 +48,7 @@ def getCategories(request):
         response_category['orderSeparateListCount'] = category.orderseparate_set.count()
         response_category['beforeCookListCount'] = category.beforecook_set.count()
         response_category['afterCookListCount'] = category.aftercook_set.count()
+        response_category['serveListCount'] = category.serve_set.count()
         response_categories.append(response_category)
     response['code'] = 0
     response['data'] = response_categories
@@ -292,7 +293,313 @@ def addCategory(request):
         response['data'] = response_category
         return HttpResponse(json.dumps(response),content_type="application/json")
 
+    elif _categoryType == '10':
+        _orderSeparateList = request.REQUEST.getlist('orderSeparateList[]')
+        _beforeCookList = request.REQUEST.getlist('beforeCookList[]')
+        _afterCookList = request.REQUEST.getlist('afterCookList[]')
+        _serveList = request.REQUEST.getlist('serveList[]')
+        if _orderSeparateList == []:
+            response['code'] = -1
+            response['errorMsg'] = '获取配菜员列表失败'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        if _beforeCookList == []:
+            response['code'] = -1
+            response['errorMsg'] = '获取前打荷列表失败'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        if _afterCookList == []:
+            response['code'] = -1
+            response['errorMsg'] = '获取后打荷列表失败'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        if _serveList == []:
+            response['code'] = -1
+            response['errorMsg'] = '获取上菜员列表失败'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        category = Category(categoryName = _categoryName,shop = shop,categoryType = _categoryType)
+        try:
+            category.save()
+        except Exception,e:
+            print('e')
+            response['code'] = -1
+            response['errorMsg'] = '保存类别失败'
+            return HttpResponse(json.dumps(response),content_type="application/json")
+        for _orderSeparateId in _orderSeparateList:
+            _orderSeparateId = str(_orderSeparateId)
+            try:
+                orderSeparate = OrderSeparate.objects.get(id = _orderSeparateId)
+            except ObjectDoesNotExist:
+                response['code'] = -1
+                response['errorMsg'] = '获取配菜员失败'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if orderSeparate.category != None:
+                response['code'] = -1
+                response['errorMsg'] = '有配菜员已经关联其他类别'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
 
+            orderSeparate.category = category
+            orderSeparate.save()
+        for _beforeCookId in _beforeCookList:
+            _beforeCookId = str(_beforeCookId)
+            try:
+                beforeCook = BeforeCook.objects.get(id = _beforeCookId)
+            except ObjectDoesNotExist:
+                response['code'] = -1
+                response['errorMsg'] = '获取前打荷失败'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if beforeCook.category != None:
+                response['code'] = -1
+                response['errorMsg'] = '有前打荷已经关联其他类别'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            beforeCook.category = category
+            beforeCook.save()
+        for _afterCookId in _afterCookList:
+            _afterCookId = str(_afterCookId)
+            try:
+                afterCook = AfterCook.objects.get(id = _afterCookId)
+            except ObjectDoesNotExist:
+                response['code'] = -1
+                response['errorMsg'] = '获取后打荷失败'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if afterCook.category != None:
+                response['code'] = -1
+                response['errorMsg'] = '有后打荷已经关联其他类别'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            afterCook.category = category
+            afterCook.save()
+
+        for _serveId in _serveList:
+            _serveId = str(_serveId)
+            try:
+                serve = Serve.objects.get(id = _serveId)
+            except ObjectDoesNotExist:
+                response['code'] = -1
+                response['errorMsg'] = '获取上菜员失败'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if serve.category != None:
+                response['code'] = -1
+                response['errorMsg'] = '有上菜员已经关联其他类别'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            serve.category = category
+            serve.save()
+
+        response['code'] = 0
+        response_category = {}
+        response_category['categoryName'] = category.categoryName
+        response_category['categoryId'] = str(category.id)
+        response_category['categoryType'] = category.categoryType
+        response_category['orderSeparateListCount'] = category.orderseparate_set.count()
+        response_category['beforeCookListCount'] = category.beforecook_set.count()
+        response_category['afterCookListCount'] = category.aftercook_set.count()
+        response_category['serveListCount'] = category.serve_set.count()
+        response['data'] = response_category
+        return HttpResponse(json.dumps(response),content_type="application/json")
+
+    elif _categoryType == '11':
+        _orderSeparateList = request.REQUEST.getlist('orderSeparateList[]')
+        _afterCookList = request.REQUEST.getlist('afterCookList[]')
+        _serveList = request.REQUEST.getlist('serveList[]')
+        if _orderSeparateList == []:
+            response['code'] = -1
+            response['errorMsg'] = '获取配菜员列表失败'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        if _afterCookList == []:
+            response['code'] = -1
+            response['errorMsg'] = '获取后打荷列表失败'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        if _serveList == []:
+            response['code'] = -1
+            response['errorMsg'] = '获取上菜员列表失败'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        category = Category(categoryName = _categoryName,shop = shop,categoryType = _categoryType)
+        try:
+            category.save()
+        except Exception,e:
+            print('e')
+            response['code'] = -1
+            response['errorMsg'] = '保存类别失败'
+            return HttpResponse(json.dumps(response),content_type="application/json")
+        for _orderSeparateId in _orderSeparateList:
+            _orderSeparateId = str(_orderSeparateId)
+            try:
+                orderSeparate = OrderSeparate.objects.get(id = _orderSeparateId)
+            except ObjectDoesNotExist:
+                response['code'] = -1
+                response['errorMsg'] = '获取配菜员失败'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if orderSeparate.category != None:
+                response['code'] = -1
+                response['errorMsg'] = '有配菜员已经关联其他类别'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+
+            orderSeparate.category = category
+            orderSeparate.save()
+
+        for _afterCookId in _afterCookList:
+            _afterCookId = str(_afterCookId)
+            try:
+                afterCook = AfterCook.objects.get(id = _afterCookId)
+            except ObjectDoesNotExist:
+                response['code'] = -1
+                response['errorMsg'] = '获取后打荷失败'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if afterCook.category != None:
+                response['code'] = -1
+                response['errorMsg'] = '有后打荷已经关联其他类别'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            afterCook.category = category
+            afterCook.save()
+
+        for _serveId in _serveList:
+            _serveId = str(_serveId)
+            try:
+                serve = Serve.objects.get(id = _serveId)
+            except ObjectDoesNotExist:
+                response['code'] = -1
+                response['errorMsg'] = '获取上菜员失败'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if serve.category != None:
+                response['code'] = -1
+                response['errorMsg'] = '有上菜员已经关联其他类别'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            serve.category = category
+            serve.save()
+
+        response['code'] = 0
+        response_category = {}
+        response_category['categoryName'] = category.categoryName
+        response_category['categoryId'] = str(category.id)
+        response_category['categoryType'] = category.categoryType
+        response_category['orderSeparateListCount'] = category.orderseparate_set.count()
+        response_category['beforeCookListCount'] = category.beforecook_set.count()
+        response_category['afterCookListCount'] = category.aftercook_set.count()
+        response_category['serveListCount'] = category.serve_set.count()
+        response['data'] = response_category
+        return HttpResponse(json.dumps(response),content_type="application/json")
+
+    elif _categoryType == '12':
+        _orderSeparateList = request.REQUEST.getlist('orderSeparateList[]')
+        _serveList = request.REQUEST.getlist('serveList[]')
+        if _orderSeparateList == []:
+            response['code'] = -1
+            response['errorMsg'] = '获取配菜员列表失败'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        if _serveList == []:
+            response['code'] = -1
+            response['errorMsg'] = '获取上菜员列表失败'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        category = Category(categoryName = _categoryName,shop = shop,categoryType = _categoryType)
+        try:
+            category.save()
+        except Exception,e:
+            print('e')
+            response['code'] = -1
+            response['errorMsg'] = '保存类别失败'
+            return HttpResponse(json.dumps(response),content_type="application/json")
+        for _orderSeparateId in _orderSeparateList:
+            _orderSeparateId = str(_orderSeparateId)
+            try:
+                orderSeparate = OrderSeparate.objects.get(id = _orderSeparateId)
+            except ObjectDoesNotExist:
+                response['code'] = -1
+                response['errorMsg'] = '获取配菜员失败'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if orderSeparate.category != None:
+                response['code'] = -1
+                response['errorMsg'] = '有配菜员已经关联其他类别'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+
+            orderSeparate.category = category
+            orderSeparate.save()
+
+        for _serveId in _serveList:
+            _serveId = str(_serveId)
+            try:
+                serve = Serve.objects.get(id = _serveId)
+            except ObjectDoesNotExist:
+                response['code'] = -1
+                response['errorMsg'] = '获取上菜员失败'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if serve.category != None:
+                response['code'] = -1
+                response['errorMsg'] = '有上菜员已经关联其他类别'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            serve.category = category
+            serve.save()
+
+        response['code'] = 0
+        response_category = {}
+        response_category['categoryName'] = category.categoryName
+        response_category['categoryId'] = str(category.id)
+        response_category['categoryType'] = category.categoryType
+        response_category['orderSeparateListCount'] = category.orderseparate_set.count()
+        response_category['beforeCookListCount'] = category.beforecook_set.count()
+        response_category['afterCookListCount'] = category.aftercook_set.count()
+        response_category['serveListCount'] = category.serve_set.count()
+        response['data'] = response_category
+        return HttpResponse(json.dumps(response),content_type="application/json")
+
+    elif _categoryType == '13':
+        _orderSeparateList = request.REQUEST.getlist('orderSeparateList[]')
+        if _orderSeparateList == []:
+            response['code'] = -1
+            response['errorMsg'] = '获取配菜员列表失败'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        category = Category(categoryName = _categoryName,shop = shop,categoryType = _categoryType)
+        try:
+            category.save()
+        except Exception,e:
+            print('e')
+            response['code'] = -1
+            response['errorMsg'] = '保存类别失败'
+            return HttpResponse(json.dumps(response),content_type="application/json")
+        for _orderSeparateId in _orderSeparateList:
+            _orderSeparateId = str(_orderSeparateId)
+            try:
+                orderSeparate = OrderSeparate.objects.get(id = _orderSeparateId)
+            except ObjectDoesNotExist:
+                response['code'] = -1
+                response['errorMsg'] = '获取配菜员失败'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+            if orderSeparate.category != None:
+                response['code'] = -1
+                response['errorMsg'] = '有配菜员已经关联其他类别'
+                return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+
+            orderSeparate.category = category
+            orderSeparate.save()
+
+        response['code'] = 0
+        response_category = {}
+        response_category['categoryName'] = category.categoryName
+        response_category['categoryId'] = str(category.id)
+        response_category['categoryType'] = category.categoryType
+        response_category['orderSeparateListCount'] = category.orderseparate_set.count()
+        response_category['beforeCookListCount'] = category.beforecook_set.count()
+        response_category['afterCookListCount'] = category.aftercook_set.count()
+        response_category['serveListCount'] = category.serve_set.count()
+        response['data'] = response_category
+        return HttpResponse(json.dumps(response),content_type="application/json")
+
+    elif _categoryType == '14':
+        category = Category(categoryName = _categoryName,shop = shop,categoryType = _categoryType)
+        try:
+            category.save()
+        except Exception,e:
+            print('e')
+            response['code'] = -1
+            response['errorMsg'] = '保存类别失败'
+            return HttpResponse(json.dumps(response),content_type="application/json")
+
+        response['code'] = 0
+        response_category = {}
+        response_category['categoryName'] = category.categoryName
+        response_category['categoryId'] = str(category.id)
+        response_category['categoryType'] = category.categoryType
+        response_category['orderSeparateListCount'] = category.orderseparate_set.count()
+        response_category['beforeCookListCount'] = category.beforecook_set.count()
+        response_category['afterCookListCount'] = category.aftercook_set.count()
+        response_category['serveListCount'] = category.serve_set.count()
+        response['data'] = response_category
+        return HttpResponse(json.dumps(response),content_type="application/json")
 
 @csrf_exempt
 def alterCategory(request):
@@ -321,50 +628,45 @@ def alterCategory(request):
         response['errorMsg'] = '上次登录失效，请重新登录'
         return HttpResponse(json.dumps(response),content_type="application/json")
     ####################END#################
-    _method = request.REQUEST.get('method')
-    if _method == None or _method == '':
-        response['code'] = -1
-        response['errorMsg'] = '获取method失败'
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-    _method = str(_method)
-    if _method == '0':
-        _categoryId = request.REQUEST.get('categoryId')
-        _categoryName = request.REQUEST.get('categoryName')
-        if _categoryName == None or _categoryName == '':
-            response['code'] = -1
-            response['errorMsg'] = '请输入名字'
-            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-        if _categoryId == None or _categoryId == '':
-            response['code'] = -1
-            response['errorMsg'] = '请输入类别id'
-            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
 
-        _categoryId = str(_categoryId)
-        _categoryName = str(_categoryName)
-        try:
-            category = Category.objects.get(id = _categoryId)
-        except ObjectDoesNotExist:
-            response['code'] = 1
-            response['errorMsg'] = '获取类别失败'
-            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
-        category.categoryName = _categoryName
-        try:
-            category.save()
-        except Exception,e:
-            print('e')
-            response['code'] = -1
-            response['errorMsg'] = '保存类别失败'
-            return HttpResponse(json.dumps(response),content_type="application/json")
-        response['code'] = 0
-        response_category = {}
-        response_category['categoryName'] = category.categoryName
-        response_category['categoryId'] = str(category.id)
-        response_category['categoryType'] = category.categoryType
-        response_category['orderSeparateListCount'] = category.orderseparate_set.count()
-        response_category['beforeCookListCount'] = category.beforecook_set.count()
-        response_category['afterCookListCount'] = category.aftercook_set.count()
-        response['data'] = response_category
+    _categoryId = request.REQUEST.get('categoryId')
+    _categoryName = request.REQUEST.get('categoryName')
+    if _categoryName == None or _categoryName == '':
+        response['code'] = -1
+        response['errorMsg'] = '请输入名字'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+    if _categoryId == None or _categoryId == '':
+        response['code'] = -1
+        response['errorMsg'] = '请输入类别id'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+
+    _categoryId = str(_categoryId)
+    _categoryName = str(_categoryName)
+    try:
+        category = Category.objects.get(id = _categoryId)
+    except ObjectDoesNotExist:
+        response['code'] = 1
+        response['errorMsg'] = '获取类别失败'
+        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+    category.categoryName = _categoryName
+    try:
+        category.save()
+    except Exception,e:
+        print('e')
+        response['code'] = -1
+        response['errorMsg'] = '保存类别失败'
         return HttpResponse(json.dumps(response),content_type="application/json")
+    response['code'] = 0
+    response_category = {}
+    response_category['categoryName'] = category.categoryName
+    response_category['categoryId'] = str(category.id)
+    response_category['categoryType'] = category.categoryType
+    response_category['orderSeparateListCount'] = category.orderseparate_set.count()
+    response_category['beforeCookListCount'] = category.beforecook_set.count()
+    response_category['afterCookListCount'] = category.aftercook_set.count()
+    response_category['serveListCount'] = category.serve_set.count()
+    response['data'] = response_category
+    return HttpResponse(json.dumps(response),content_type="application/json")
 
 
 @csrf_exempt

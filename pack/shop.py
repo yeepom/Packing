@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 from django.core.cache import cache
 import sys,re,json,time,datetime
-from pack.models import Shop,ShopWallet,ShopFeedBack,Waiter,Cook,Serve,BeforeCook,AfterCook,OrderSeparate
+from pack.models import Shop,ShopWallet,ShopFeedBack,Waiter,Serve,BeforeCook,AfterCook,OrderSeparate
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.gis import geos
 from django.core.exceptions import ObjectDoesNotExist
