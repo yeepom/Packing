@@ -1164,10 +1164,15 @@ def removeServe(request):
             response['code'] = -1
             response['errorMsg'] = '该上菜员正在忙碌中'
             return HttpResponse(json.dumps(response),content_type="application/json")
-        serve.shopId = ''
-        serve.save()
-        response['code'] = 0
-        return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        if serve.category == None:
+            serve.shopId = ''
+            serve.save()
+            response['code'] = 0
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
+        else:
+            response['code'] = -1
+            response['errorMsg'] = '请在品类中将该传菜员解绑，然后可以删除'
+            return HttpResponse(json.dumps(response,ensure_ascii=False),content_type="application/json")
     else:
         response['code'] = -1
         response['errorMsg'] = '该账号未关联'
