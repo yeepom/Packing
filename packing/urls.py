@@ -174,7 +174,7 @@ urlpatterns = patterns('',
 
 
     # url(r'^testPush$','pack.orderSeparate_order.testPush'),
-    # url(r'^testPushIOS$','pack.orderSeparate_order.testPushIOS'),
+    url(r'^testPushIOS$','pack.orderSeparate_order.testPushIOS'),
     # url(r'^testPushViaClientID$','pack.orderSeparate_order.testPushViaClientID'),
 
     url(r'^shopProtocol$','pack.webViews.shopProtocol'),

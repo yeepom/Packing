@@ -59,7 +59,7 @@ def shopVerifyTelephone(request):
     _method = str(_method)
 
     if _verify_code == '8888':
-        cache.set(str(_telephone),str(_verify_code),1800)
+        cache.set(str(_telephone),str(_verify_code),5*60)
 
     if len(_telephone) != 11:
         response['code'] = -1

@@ -35,9 +35,14 @@ import json
 #toList接口每个用户返回用户状态开关,true：打开 false：关闭
 os.environ['needDetails'] = 'true'
 
+# this is distribution
 APPID = "BjEqnfGEfL7nT5V4bvPAk1"
 APPKEY = "JyeKT2SXPX84aYZ79irCMA"
 MASTERSECRET = "Mc4sa7Rogd68T7HypAaG6"
+
+# APPID = "lNlFBNKbbjASP43J6RSxi9"
+# APPKEY = "611smWkrRR85Ao5AoPS1p8"
+# MASTERSECRET = "qYAt3vuZ8X5KLC7BibAIp4"
 
 CID = ""
 HOST = 'http://sdk.open.api.igexin.com/apiex.htm'

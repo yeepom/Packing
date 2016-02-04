@@ -335,7 +335,7 @@ def verifyWaiter(request):
 
     _telephone = request.REQUEST.get('telephone')
     _verify_code = request.REQUEST.get('verifyCode')
-    # cache.set(str(_telephone),str(_verify_code),1800)
+    # cache.set(str(_telephone),str(_verify_code),5*60)
     if _telephone == None or _telephone == '':
         response['code'] = -1
         response['errorMsg'] = u'请输入手机号'
@@ -349,7 +349,7 @@ def verifyWaiter(request):
     _verify_code = str(_verify_code)
 
     if _verify_code == '8888':
-        cache.set(str(_telephone),str(_verify_code),1800)
+        cache.set(str(_telephone),str(_verify_code),5*60)
 
     if len(_telephone) != 11:
         response['code'] = -1
@@ -507,7 +507,7 @@ def verifyOrderSeparate(request):
 
     _telephone = request.REQUEST.get('telephone')
     _verify_code = request.REQUEST.get('verifyCode')
-    # cache.set(str(_telephone),str(_verify_code),1800)
+    # cache.set(str(_telephone),str(_verify_code),5*60)
     if _telephone == None or _telephone == '':
         response['code'] = -1
         response['errorMsg'] = u'请输入手机号'
@@ -521,7 +521,7 @@ def verifyOrderSeparate(request):
     _verify_code = str(_verify_code)
 
     if _verify_code == '8888':
-        cache.set(str(_telephone),str(_verify_code),1800)
+        cache.set(str(_telephone),str(_verify_code),5*60)
 
     if len(_telephone) != 11:
         response['code'] = -1
@@ -685,9 +685,9 @@ def verifyBeforeCook(request):
     _verify_code = request.REQUEST.get('verifyCode')
 
     if _verify_code == '8888':
-        cache.set(str(_telephone),str(_verify_code),1800)
+        cache.set(str(_telephone),str(_verify_code),5*60)
 
-    # cache.set(str(_telephone),str(_verify_code),1800)
+    # cache.set(str(_telephone),str(_verify_code),5*60)
     if _telephone == None or _telephone == '':
         response['code'] = -1
         response['errorMsg'] = u'请输入手机号'
@@ -858,10 +858,10 @@ def verifyAfterCook(request):
 
     _telephone = request.REQUEST.get('telephone')
     _verify_code = request.REQUEST.get('verifyCode')
-    # cache.set(str(_telephone),str(_verify_code),1800)
+    # cache.set(str(_telephone),str(_verify_code),5*60)
 
     if _verify_code == '8888':
-        cache.set(str(_telephone),str(_verify_code),1800)
+        cache.set(str(_telephone),str(_verify_code),5*60)
 
     if _telephone == None or _telephone == '':
         response['code'] = -1
@@ -1034,10 +1034,10 @@ def verifyServe(request):
 
     _telephone = request.REQUEST.get('telephone')
     _verify_code = request.REQUEST.get('verifyCode')
-    # cache.set(str(_telephone),str(_verify_code),1800)
+    # cache.set(str(_telephone),str(_verify_code),5*60)
 
     if _verify_code == '8888':
-        cache.set(str(_telephone),str(_verify_code),1800)
+        cache.set(str(_telephone),str(_verify_code),5*60)
 
     if _telephone == None or _telephone == '':
         response['code'] = -1

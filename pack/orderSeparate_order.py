@@ -154,10 +154,11 @@ def orderSeparateFinishOrderSkuList(request):
 #     print pushRst
 #     return HttpResponse(pushRst)
 #
-# @csrf_exempt
-# def testPushIOS(request):
-#     pushRst = pushAPNToShop("c08cf207be534650bfd07f983eee067cf1931b1df5f17374bfa4b48158bc52e8",'0','{"method":"pushNewOrdersToSaler"}')
-#     return HttpResponse(pushRst)
+@csrf_exempt
+def testPushIOS(request):
+    pushRst = pushAPNToShop("db6796bef6cc77cb3501e434076662856afc2a90ede564bbfb98db69f49b471d",'0',
+                            '{"method":"pushNewOrderSkusToOrderSeparate"}')
+    return HttpResponse(pushRst)
 #
 # @csrf_exempt
 # def testPushViaClientID(request):

@@ -91,7 +91,7 @@ def sendVerifyCode(request):
             response['code'] = -1
             response['errorMsg'] = sms_response_json['message']
             return HttpResponse(json.dumps(response),content_type="application/json")
-        cache.set(str(_telephone),str(verify_code),1800)
+        cache.set(str(_telephone),str(verify_code),10*60)
         print('send_verify_code:'+cache.get(str(_telephone)))
         response['code'] =  0
         return HttpResponse(json.dumps(response),content_type="application/json")
@@ -119,7 +119,7 @@ def verifyTelephone(request):
     _deviceToken = request.REQUEST.get('deviceToken')
     _deviceInfo = request.REQUEST.get('deviceInfo')
     logger.info(str(_telephone))
-    cache.set(str(_telephone),str(_verify_code),1800)
+    cache.set(str(_telephone),str(_verify_code),5*60)
     if _telephone == None or _telephone == '':
         response['code'] = -1
         response['errorMsg'] = '请输入手机号'
